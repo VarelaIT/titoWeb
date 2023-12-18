@@ -16,12 +16,12 @@ rectangleForm.addEventListener('submit', (event)=>{
 
 function printGlass(glass){
     glassContainer.innerHTML= `
-        <p>Rieles: ${glass.getRails()}</p>
-        <p>Laterales: ${glass.getLaterals()}</p>
-        <p>Afaisal y cabesal: ${glass.getAlfaisal()}</p>
-        <p>Jambas: ${glass.getJambas()}</p>
-        <p>Base de los cristales: ${glass.getGlassBase()}</p>
-        <p>Altura de los cristales: ${glass.getGlassHeigth()}</p>
+        <p>Rieles: ${glass.getRails().toFixed(2)}</p>
+        <p>Laterales: ${glass.getLaterals().toFixed(2)}</p>
+        <p>Afaisal y cabezal: ${glass.getAlfaisal().toFixed(2)}</p>
+        <p>Jambas: ${glass.getJambas().toFixed(2)}</p>
+        <p>Base de los cristales: ${glass.getGlassBase().toFixed(2)}</p>
+        <p>Altura de los cristales: ${glass.getGlassHeigth().toFixed(2)}</p>
     `;
 }
 
