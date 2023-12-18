@@ -32,6 +32,7 @@
             justify-content: space-between;
         }
     </style>
+	<script type="module" src="./scripts/main.js" defer></script>
     <title>Projecto Areas</title>
 </head>
 <body>
@@ -40,7 +41,7 @@
 
         <article>
             <h2>Rectangulo para ventanas.</h2>
-            <form>
+            <form id="rectangle-form"> 
                 <p>
                     <label>
                         Base
@@ -55,8 +56,16 @@
                     </label>
                 </p>
 
+                <p>
+                    <label>
+                        Paneles
+                        <input name="panels" placeholder="cantidad de paneles" value="2" required pattern="\d"/>
+                    </label>
+                </p>
+
                 <input type="submit" value="Ejecutar Calculo"/>
             </form>
+            <p id="glass-container"></p>
         </article>
     </main>
 
@@ -66,15 +75,6 @@
         </ul>
     </footer>
 
-    <script>
-        const form= document.querySelector('form');
-        form.onsubmit= (ev)=>{
-            ev.preventDefault();
-            let data= new FormData(ev.target);
-            console.log(data);
-            alert('El formulario fue imprento en la consola.');
-        }
-    </script>
 </body>
 </html>
 
