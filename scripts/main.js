@@ -37,7 +37,7 @@ class MeasureGlassWindow{
     }
 
     glassDiff={
-        base: 1.75,
+        base: 1.415,
         heigth: 3.875
     }
 
