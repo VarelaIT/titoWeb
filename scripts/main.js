@@ -17,12 +17,12 @@ rectangleForm.addEventListener('submit', (event)=>{
 
 function printGlass(glass){
     glassContainer.innerHTML= `
-        <p>Rieles: ${glass.getRails().toFixed(2)}</p>
-        <p>Laterales: ${glass.getLaterals().toFixed(2)}</p>
-        <p>Afaisal y cabezal: ${glass.getAlfaisal().toFixed(2)}</p>
-        <p>Jambas: ${glass.getJambas().toFixed(2)}</p>
-        <p>Base de los cristales: ${glass.getGlassBase().toFixed(2)}</p>
-        <p>Altura de los cristales: ${glass.getGlassHeigth().toFixed(2)}</p>
+        <p>Rieles: <strong style="color: gray;">${glass.getRails().toFixed(2)}</strong></p>
+        <p>Laterales: <strong style="color: gray;">${glass.getLaterals().toFixed(2)}</strong></p>
+        <p>Afaisal y cabezal: <strong style="color: green;">${glass.getAlfaisal().toFixed(2)}</strong></p>
+        <p>Jambas: <strong style="color: green;">${glass.getJambas().toFixed(2)}</strong></p>
+        <p>Base de los cristales: <strong style="color: blue;">${glass.getGlassBase().toFixed(2)}</strong></p>
+        <p>Altura de los cristales: <strong style="color: blue;">${glass.getGlassHeigth().toFixed(2)}</strong></p>
     `;
 }
 
@@ -34,11 +34,11 @@ class MeasureGlassWindow{
 
     panelDiff={
         jambas: .75,
-        alfaisal: .25
+        alfaisal: .125
     }
 
     glassDiff={
-        base: 1.415,
+        base: 1.25,
         heigth: 3.875
     }
 

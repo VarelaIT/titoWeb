@@ -26,11 +26,12 @@ header('Pragma: no-cache');
             margin: 48px auto;
         }
 
-        input, textarea{
+        input{
             position: relative;
             display: block;
             width: 100%;
             padding: 12px;
+            font-size: 24px;
         }
 
         .rango{
@@ -40,11 +41,11 @@ header('Pragma: no-cache');
         }
     </style>
 	<script type="module" src="./scripts/main.js" defer></script>
-    <title>Projecto Areas</title>
+    <title>Puertas y Ventanas Tito</title>
 </head>
 <body>
     <main>
-        <h1>Projecto Areas</h1>
+        <h1>Puertas y Ventanas Tito</h1>
 
         <article>
             <h2>Rectangulo para ventanas.</h2>
@@ -52,21 +53,21 @@ header('Pragma: no-cache');
                 <p>
                     <label>
                         Base
-                        <input name="base" placeholder="Base del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}"/>
+                        <input  inputmode="decimal" name="base" placeholder="Base del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}"/>
                     </label>
                 </p>
 
                 <p>
                     <label>
                         Altura
-                        <input name="heigth" placeholder="Altura del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}"/>
+                        <input  inputmode="decimal" name="heigth" placeholder="Altura del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}"/>
                     </label>
                 </p>
 
                 <p>
                     <label>
                         Paneles
-                        <input name="panels" placeholder="cantidad de paneles" value="2" required pattern="\d"/>
+                        <input  inputmode="decimal" name="panels" placeholder="cantidad de paneles" value="2" required pattern="\d"/>
                     </label>
                 </p>
 
