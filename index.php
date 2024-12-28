@@ -7,83 +7,85 @@ header('Pragma: no-cache');
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-        *{
-            position: relative;
-            box-sizing: border-box;
-            font-family: sans-serif;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="scripts/manifest.json" />
+  <style>
+    * {
+      position: relative;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
 
-        article{ 
-            position: relative;
-            max-width: 700px;
-            border: 1px solid #000;
-            border-radius: 14px;
-            padding: 32px;
-            margin: 48px auto;
-        }
+    article {
+      position: relative;
+      max-width: 700px;
+      border: 1px solid #000;
+      border-radius: 14px;
+      padding: 32px;
+      margin: 48px auto;
+    }
 
-        input{
-            position: relative;
-            display: block;
-            width: 100%;
-            padding: 12px;
-            font-size: 24px;
-        }
+    input {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 24px;
+    }
 
-        .rango{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-    </style>
-	<script type="module" src="./scripts/main.js" defer></script>
-    <title>Puertas y Ventanas Tito</title>
+    .rango {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  </style>
+  <script type="module" src="./scripts/main.js" defer></script>
+  <title>Puertas y Ventanas Tito</title>
 </head>
+
 <body>
-    <main>
-        <h1>Puertas y Ventanas Tito</h1>
+  <main>
+    <h1>Puertas y Ventanas Tito</h1>
 
-        <article>
-            <h2>Rectangulo para ventanas.</h2>
-            <form id="rectangle-form"> 
-                <p>
-                    <label>
-                        Base
-                        <input  inputmode="decimal" name="base" placeholder="Base del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}"/>
-                    </label>
-                </p>
+    <article>
+      <h2>Rectangulo para ventanas.</h2>
+      <form id="rectangle-form">
+        <p>
+          <label>
+            Base
+            <input inputmode="decimal" name="base" placeholder="Base del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}" />
+          </label>
+        </p>
 
-                <p>
-                    <label>
-                        Altura
-                        <input  inputmode="decimal" name="heigth" placeholder="Altura del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}"/>
-                    </label>
-                </p>
+        <p>
+          <label>
+            Altura
+            <input inputmode="decimal" name="heigth" placeholder="Altura del rectangulo" required pattern="\d{1,4}|\d{1,4}\.\d{1,2}" />
+          </label>
+        </p>
 
-                <p>
-                    <label>
-                        Paneles
-                        <input  inputmode="decimal" name="panels" placeholder="cantidad de paneles" value="2" required pattern="\d"/>
-                    </label>
-                </p>
+        <p>
+          <label>
+            Paneles
+            <input inputmode="decimal" name="panels" placeholder="cantidad de paneles" value="2" required pattern="\d" />
+          </label>
+        </p>
 
-                <input type="submit" value="Ejecutar Calculo"/>
-            </form>
-            <p id="glass-container"></p>
-        </article>
-    </main>
+        <input type="submit" value="Ejecutar Calculo" />
+      </form>
+      <p id="glass-container"></p>
+    </article>
+  </main>
 
-    <footer>
-        <ul>
-            <li>Copyrights: VarelaIT®</li>
-        </ul>
-    </footer>
+  <footer>
+    <ul>
+      <li>Copyrights: VarelaIT®</li>
+    </ul>
+  </footer>
 
 </body>
+
 </html>
-
-
