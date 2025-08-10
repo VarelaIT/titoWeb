@@ -1,4 +1,4 @@
-import type { ILayoutProps, TStyleVariant } from "../../scripts/types";
+import type { IElementProps, ILayoutProps, TStyleVariant } from "../../scripts/types";
 
 
 export interface IButtonProps extends ILayoutProps{
@@ -33,5 +33,34 @@ export function Button({variant, className, style, onClick, children}: IButtonPr
         onClick={onClick}
     >
         {children}
+    </button>
+}
+
+export interface ITabButtonProps extends IElementProps{
+    legend: string,
+    selected: boolean
+    onClick?: React.MouseEventHandler<HTMLButtonElement>,
+}
+
+export function TabButton({legend, selected, className, style, onClick}: ITabButtonProps){
+    const baseClass = getStyles(selected);
+
+    function getStyles(isSelected: boolean) {
+        let result = "p-2 rounded-tl-md rounded-tr-md cursor-pointer font-medium "
+            + "bg-slate-500 text-white dark:bg-slate-800 dark:text-gray-200 "
+            + "hover:bg-slate-700 dark:hover:bg-slate-950 "
+            ;
+        if(isSelected){
+            result += "bg-slate-600 text-white dark:bg-slate-900 dark:text-gray-200 "
+        }
+        return result;
+    }
+
+    return <button
+        onClick={onClick}
+        className={baseClass + className}
+        style={style}
+    >
+        {legend}
     </button>
 }

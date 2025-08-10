@@ -1,8 +1,21 @@
 import './App.css'
 import { Page } from './components/elements/pages'
 import { AppHeader } from './components/layout/header'
+import { Tabs, type Tab } from './components/layout/tab'
+import { ClassicWindow } from './components/pages/classicWindow';
 
 function App() {
+
+  const tabs: Tab[] = [
+    {
+      legend: "Nuevo",
+      renderer: <p>Nuevo layout</p>
+    },
+    {
+      legend: "Ventana Clasica",
+      renderer: <ClassicWindow/>
+    },
+  ];
 
   return (
     <main
@@ -18,7 +31,8 @@ function App() {
       <AppHeader />
       <div className='relative p-4'>
         <Page className='flex flex-wrap justify-center items-center w-full h-full'>
-          <h1>Ventarela</h1>
+          <h1 className='font-bold'>Ventarela</h1>
+          <Tabs tabs={tabs}/>
         </Page>
       </div>
 

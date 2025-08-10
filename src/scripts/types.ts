@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
 
-export interface ILayoutProps {
+
+export interface ILayoutProps extends IElementProps{
+    children: ReactNode,
+}
+
+export interface IElementProps {
     className?: string,
     style?: React.CSSProperties,
-    children: ReactNode,
 }
 
 export type TStyleVariant = "primary" | "transparent";
