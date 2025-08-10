@@ -8,7 +8,7 @@ function App() {
   const tabs: Tab[] = [
     {
       legend: "Nuevo",
-      renderer: <p>Nuevo layout</p>
+      renderer: <p className='text-white'>Estamos trabajando en este modulo; pronto estara disponible.</p>
     },
     {
       legend: "Ventana Clasica",

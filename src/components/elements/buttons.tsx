@@ -10,7 +10,7 @@ export function Button({variant, className, style, onClick, children}: IButtonPr
     const baseStyle  = getClassVariant(variant);
 
     function getClassVariant(variant?: TStyleVariant){
-        let result = "p-2 rounded-md cursor-pointer ";
+        let result = "p-2 rounded-md flex justify-center cursor-pointer ";
 
         switch(variant){
             case "transparent":
@@ -28,6 +28,7 @@ export function Button({variant, className, style, onClick, children}: IButtonPr
     }
 
     return <button 
+        tabIndex={0}   
         className={baseStyle + className}
         style={style}
         onClick={onClick}

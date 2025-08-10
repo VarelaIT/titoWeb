@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 export interface IWindow {
-    base: number | undefined,
-    height: number | undefined, 
+    base: string | undefined,
+    height: string | undefined, 
     panels: number | undefined,
 }
 

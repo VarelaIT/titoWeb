@@ -5,6 +5,7 @@ import type { IWindow } from "../../scripts/types";
 import { Button } from "../elements/buttons";
 import { calcClassicWindow } from "../../scripts/utils";
 import type { ClassicWindowMeasurements } from "../../scripts/windowsMessurement";
+import { Sigma } from "lucide-react";
 
 export function ClassicWindow(){
     const [window, setWindow] = useState<IWindow>({base: undefined, height: undefined, panels: 2});
@@ -58,12 +59,9 @@ export function ClassicWindow(){
                             inputMode="decimal" 
                             placeHolder="Base del rectangulo" 
                             required 
-                            pattern="\d{1,4}|\d{1,4}\.\d{1,2}" 
+                            pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}" 
                             value={window.base}
-                            onChange={(e)=> {
-                                const value = parseFloat(e.target.value);
-                                setWindow({...window, base: Number.isNaN(value)? undefined : value});
-                            }}
+                            onChange={(e)=> setWindow({...window, base: e.target.value})}
                         />
                     </label>
                 </p>
@@ -76,12 +74,9 @@ export function ClassicWindow(){
                             inputMode="decimal" 
                             placeHolder="Altura del rectangulo" 
                             required 
-                            pattern="\d{1,4}|\d{1,4}\.\d{1,2}" 
+                            pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}" 
                             value={window.height}
-                            onChange={(e)=> {
-                                const value = parseFloat(e.target.value);
-                                setWindow({...window, height: Number.isNaN(value)? undefined : value});
-                            }}
+                            onChange={(e)=> setWindow({...window, height: e.target.value})}
                         />
                     </label>
                 </p>
@@ -106,7 +101,12 @@ export function ClassicWindow(){
 
                 <Button
                     onClick={()=> setDetails(calcClassicWindow(window))}
-                >Ejecutar Calculo</Button> 
+                >
+                    <span className="flex gap-2">
+                        <Sigma />
+                        <span>Ejecutar Calculo</span>
+                    </span>
+                </Button> 
             </article>
         </Page>
     )
