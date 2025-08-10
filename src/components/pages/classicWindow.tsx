@@ -10,13 +10,19 @@ import { Sigma } from "lucide-react";
 export function ClassicWindow(){
     const [window, setWindow] = useState<IWindow>({base: undefined, height: undefined, panels: 2});
     const [details, setDetails] = useState<ClassicWindowMeasurements | undefined>(undefined);
+    const [slideIn, setSlideIn] = useState(true);
 
     const Resume = useMemo(()=> {
+        const animation = slideIn? "motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-md " : "";
         if(details){ 
-            return <article className="grid gap-4 py-4 translate-x-2">
+
+            return <article className={
+                "grid gap-4 py-4 translate-x-2 "
+                + animation
+            }>
                 <p className="col-span-full">
-                    Medidas resultantes de marco de base <b>{window.base} </b>
-                    y altura <b>{window.height}</b> para una ventana de  {window.panels} paneles.
+                    Medidas resultantes de marco de base <b>{details.base} </b>
+                    y altura <b>{details.height}</b> para una ventana de  {details.panels} paneles.
                 </p>
                 <p className="grid gap-4 grid-cols-2">
                     <span className="text-right">Rieles</span>
@@ -44,12 +50,15 @@ export function ClassicWindow(){
                 </p>
             </article>
         }
-    }, [details]);
+        return undefined;
+    }, [details, slideIn]);
 
     return (
         <Page>
             <h2 className="font-bold text-xl">Ventana Clasica</h2>
-            {Resume&& Resume}
+            <div className="overflow-hidden">
+                {Resume&& Resume}
+            </div>
             <article className="grid gap-4 py-4">
                 <p>
                     <label className={`grid grid-cols-4 gap-2`}>
@@ -61,7 +70,10 @@ export function ClassicWindow(){
                             required 
                             pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}" 
                             value={window.base}
-                            onChange={(e)=> setWindow({...window, base: e.target.value})}
+                            onChange={(e)=> {
+                                setSlideIn(false)
+                                setWindow({...window, base: e.target.value})
+                            }}
                         />
                     </label>
                 </p>
@@ -76,7 +88,10 @@ export function ClassicWindow(){
                             required 
                             pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}" 
                             value={window.height}
-                            onChange={(e)=> setWindow({...window, height: e.target.value})}
+                            onChange={(e)=> {
+                                setSlideIn(false)
+                                setWindow({...window, height: e.target.value})
+                            }}
                         />
                     </label>
                 </p>
@@ -92,6 +107,7 @@ export function ClassicWindow(){
                             pattern="\d" 
                             value={window.panels}
                             onChange={(e)=> {
+                                setSlideIn(false)
                                 const value = parseFloat(e.target.value);
                                 setWindow({...window, panels: Number.isNaN(value)? undefined : value});
                             }}
@@ -100,7 +116,10 @@ export function ClassicWindow(){
                 </p>
 
                 <Button
-                    onClick={()=> setDetails(calcClassicWindow(window))}
+                    onClick={()=> {
+                        setSlideIn(true)
+                        setDetails(calcClassicWindow(window))
+                    }}
                 >
                     <span className="flex gap-2">
                         <Sigma />
