@@ -1,19 +1,18 @@
 import './App.css'
 import { AppHeader } from './components/layout/header'
 import { Tabs, type Tab } from './components/layout/tab'
-import { ClassicWindow } from './components/pages/classicWindow';
-import { ModernWindow } from './components/pages/modernWindow';
+import { WindowCalculator } from './components/pages/windowCalculator';
 
 function App() {
 
   const tabs: Tab[] = [
     {
       legend: "Moderna",
-      renderer: <ModernWindow/>
+      renderer: <WindowCalculator modern={true}/>
     },
     {
       legend: "Clasica",
-      renderer: <ClassicWindow/>
+      renderer: <WindowCalculator modern={false}/>
     },
   ];
 

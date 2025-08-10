@@ -7,10 +7,12 @@ import type { ClassicWindowMeasurements } from "../../scripts/windowsMessurement
 import { Sigma } from "lucide-react";
 import { calcWindow } from "../../scripts/utils";
 
-export function ClassicWindow(){
+export function WindowCalculator({modern}: {modern:boolean}){
     const [window, setWindow] = useState<IWindow>({base: undefined, height: undefined, panels: 2});
     const [details, setDetails] = useState<ClassicWindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
+
+    useMemo(()=> setDetails(undefined), [modern]);
 
     const Resume = useMemo(()=> {
         const animation = slideIn? "motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-md " : "";
@@ -55,7 +57,7 @@ export function ClassicWindow(){
 
     return (
         <Page>
-            <h2 className="font-bold text-xl">Ventana Clasica</h2>
+            <h2 className="font-bold text-xl">Ventana {modern? "Moderna" : "Clasica"}</h2>
             <div className="overflow-hidden">
                 {Resume&& Resume}
             </div>
@@ -118,7 +120,7 @@ export function ClassicWindow(){
                 <Button
                     onClick={()=> {
                         setSlideIn(true)
-                        setDetails(calcWindow(window, false))
+                        setDetails(calcWindow(window, modern))
                     }}
                 >
                     <span className="flex gap-2">
