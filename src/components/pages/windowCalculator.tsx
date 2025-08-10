@@ -57,7 +57,7 @@ export function WindowCalculator({modern}: {modern:boolean}){
 
     return (
         <Page>
-            <h2 className="font-bold text-xl">Ventana {modern? "Moderna" : "Clasica"}</h2>
+            <h2 className="font-bold text-xl">Ventana {modern? "Moderna" : "Tradicional"}</h2>
             <div className="overflow-hidden">
                 {Resume&& Resume}
             </div>

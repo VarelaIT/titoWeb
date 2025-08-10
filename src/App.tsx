@@ -11,7 +11,7 @@ function App() {
       renderer: <WindowCalculator modern={true}/>
     },
     {
-      legend: "Clasica",
+      legend: "Tradicional",
       renderer: <WindowCalculator modern={false}/>
     },
   ];
