@@ -1,5 +1,19 @@
 import type { ReactNode } from "react";
 
+export interface IWindow {
+    base: number | undefined,
+    height: number | undefined, 
+    panels: number | undefined,
+}
+
+export interface IBaseInput{
+    value: string | number | undefined,
+    required?: boolean,
+    placeHolder?: string,
+    inputMode?: "search" | "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal",
+    pattern?: string,
+    disable?: boolean,
+}
 
 export interface ILayoutProps extends IElementProps{
     children: ReactNode,

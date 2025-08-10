@@ -10,7 +10,7 @@ export function AppHeader(){
             "p-4 flex justify-between " +
             "bg-stone-100 text-gray-800 dark:bg-stone-800 dark:text-gray-100"
         }>
-            <div><h2 className="text-2xl">Logo</h2></div>
+          <h1 className='font-bold text-xl'>VENTARELA</h1>
             <Button
                 variant="transparent"
                 onClick={()=> {

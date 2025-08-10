@@ -14,12 +14,12 @@ export function Button({variant, className, style, onClick, children}: IButtonPr
 
         switch(variant){
             case "transparent":
-                result += "hover:bg-stone-200 dark:hover:bg-slate-800 "
+                result += "hover:bg-stone-200 dark:hover:bg-slate-900 "
                     + " hover:shadow-md dark:hover:shadow-md dark:shadow-blue-500/50"
                     break;
             default:
-                result += "bg-slate-600 text-white dark:bg-slate-700 dark:text-gray-200 "
-                    + "hover:bg-slate-400 dark:hover:bg-slate-500 "
+                result += "bg-slate-600 text-white dark:bg-slate-900 dark:text-gray-200 "
+                    + "hover:bg-slate-800 dark:hover:bg-slate-950 "
                     + "shadow-md dark:shadow-white/50"
                     break;
         }

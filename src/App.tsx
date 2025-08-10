@@ -1,5 +1,4 @@
 import './App.css'
-import { Page } from './components/elements/pages'
 import { AppHeader } from './components/layout/header'
 import { Tabs, type Tab } from './components/layout/tab'
 import { ClassicWindow } from './components/pages/classicWindow';
@@ -22,6 +21,7 @@ function App() {
       className={
         "h-screen w-screen bg-stone-100 "
         + "bg-stone-200 text-gray-800 dark:bg-stone-900 dark:text-gray-200 "
+        + "overflow-auto "
       }
       style={{
         display: "grid",
@@ -30,12 +30,8 @@ function App() {
     >
       <AppHeader />
       <div className='relative p-4'>
-        <Page className='flex flex-wrap justify-center items-center w-full h-full'>
-          <h1 className='font-bold'>Ventarela</h1>
           <Tabs tabs={tabs}/>
-        </Page>
       </div>
-
     </main>
   )
 }

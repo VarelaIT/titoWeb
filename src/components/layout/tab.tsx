@@ -15,7 +15,7 @@ export function Tabs({tabs}: ITabsProps){
     const [selected, setSelected] = useState(0);
 
     return (
-        <Page>
+        <Page className="relative h-full">
             {tabs.map((tab, i)=> 
                 <TabButton key={"tabElementIndex" + i} 
                     legend={tab.legend} 
