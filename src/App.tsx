@@ -2,16 +2,17 @@ import './App.css'
 import { AppHeader } from './components/layout/header'
 import { Tabs, type Tab } from './components/layout/tab'
 import { ClassicWindow } from './components/pages/classicWindow';
+import { ModernWindow } from './components/pages/modernWindow';
 
 function App() {
 
   const tabs: Tab[] = [
     {
-      legend: "Nuevo",
-      renderer: <p className='text-white'>Estamos trabajando en este modulo; pronto estara disponible.</p>
+      legend: "Moderna",
+      renderer: <ModernWindow/>
     },
     {
-      legend: "Ventana Clasica",
+      legend: "Clasica",
       renderer: <ClassicWindow/>
     },
   ];

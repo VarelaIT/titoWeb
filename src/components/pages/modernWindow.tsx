@@ -7,7 +7,7 @@ import type { ClassicWindowMeasurements } from "../../scripts/windowsMessurement
 import { Sigma } from "lucide-react";
 import { calcWindow } from "../../scripts/utils";
 
-export function ClassicWindow(){
+export function ModernWindow(){
     const [window, setWindow] = useState<IWindow>({base: undefined, height: undefined, panels: 2});
     const [details, setDetails] = useState<ClassicWindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
@@ -55,7 +55,7 @@ export function ClassicWindow(){
 
     return (
         <Page>
-            <h2 className="font-bold text-xl">Ventana Clasica</h2>
+            <h2 className="font-bold text-xl">Ventana Moderna</h2>
             <div className="overflow-hidden">
                 {Resume&& Resume}
             </div>
@@ -118,7 +118,7 @@ export function ClassicWindow(){
                 <Button
                     onClick={()=> {
                         setSlideIn(true)
-                        setDetails(calcWindow(window, false))
+                        setDetails(calcWindow(window, true))
                     }}
                 >
                     <span className="flex gap-2">

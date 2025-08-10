@@ -1,7 +1,7 @@
 import type { IWindow } from "./types";
-import { ClassicWindowMeasurements } from "./windowsMessurement";
+import { ClassicWindowMeasurements, ModernWindowMeasurements } from "./windowsMessurement";
 
-export function calcClassicWindow(window: IWindow){
+export function calcWindow(window: IWindow, modern: boolean){
     if (window.base && window.height && window.panels) {
         const base = parseFloat(window.base);
         const height = parseFloat(window.height);
@@ -19,6 +19,8 @@ export function calcClassicWindow(window: IWindow){
             return undefined;
         }
 
+        if(modern)
+            return new ModernWindowMeasurements(base, height, panels)
         return new ClassicWindowMeasurements(base, height, panels)
     }
 
