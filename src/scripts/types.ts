@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
+import * as z from "zod";
+import type { WINDOW_SCHEMA } from "./zodSchemas";
 
-export interface IWindow {
+export type TWindow = z.infer<typeof WINDOW_SCHEMA>;
+
+export interface IWindowInputs {
     base: string | undefined,
     height: string | undefined, 
-    panels: number | undefined,
+    panels: string | undefined,
 }
 
 export interface IBaseInput{

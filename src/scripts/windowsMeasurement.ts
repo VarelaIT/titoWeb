@@ -1,3 +1,4 @@
+import type { TWindow } from "./types";
 
 export class ModernWindowMeasurements{
     frameDiff= {
@@ -19,10 +20,10 @@ export class ModernWindowMeasurements{
     height: number;
     panels: number;
 
-    constructor(base: number, height: number, panels: number){
-        this.base= base;
-        this.height= height;
-        this.panels= panels;
+    constructor(window: TWindow){
+        this.base= window.base;
+        this.height= window.height;
+        this.panels= window.panels;
     }
 
     getRails(){
@@ -73,10 +74,10 @@ export class ClassicWindowMeasurements{
     height: number;
     panels: number;
 
-    constructor(base: number, height: number, panels: number){
-        this.base= base;
-        this.height= height;
-        this.panels= panels;
+    constructor(window: TWindow){
+        this.base= window.base;
+        this.height= window.height;
+        this.panels= window.panels;
     }
 
     getRails(){

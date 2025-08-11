@@ -1,14 +1,16 @@
 import { useMemo, useState } from "react";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
-import type { IWindow } from "../../scripts/types";
+import type { IWindowInputs } from "../../scripts/types";
 import { Button } from "../elements/buttons";
-import type { ClassicWindowMeasurements } from "../../scripts/windowsMessurement";
 import { Sigma } from "lucide-react";
 import { calcWindow } from "../../scripts/utils";
+import { WINDOW_SCHEMA } from "../../scripts/zodSchemas";
+import * as z from "zod";
+import type { ClassicWindowMeasurements } from "../../scripts/windowsMeasurement";
 
 export function WindowCalculator({modern}: {modern:boolean}){
-    const [window, setWindow] = useState<IWindow>({base: undefined, height: undefined, panels: 2});
+    const [window, setWindow] = useState<IWindowInputs>({base: undefined, height: undefined, panels: "2"});
     const [details, setDetails] = useState<ClassicWindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
 
@@ -110,8 +112,7 @@ export function WindowCalculator({modern}: {modern:boolean}){
                             value={window.panels}
                             onChange={(e)=> {
                                 setSlideIn(false)
-                                const value = parseFloat(e.target.value);
-                                setWindow({...window, panels: Number.isNaN(value)? undefined : value});
+                                setWindow({...window, panels: e.target.value});
                             }}
                         />
                     </label>
@@ -119,8 +120,21 @@ export function WindowCalculator({modern}: {modern:boolean}){
 
                 <Button
                     onClick={()=> {
+                        const newWindow = {
+                            base: parseFloat(window.base?? ""),
+                            height: parseFloat(window.height?? ""),
+                            panels: parseInt(window.panels?? ""),
+                        }
+                        try{
+                        setDetails(calcWindow(WINDOW_SCHEMA.parse(newWindow), modern))
                         setSlideIn(true)
-                        setDetails(calcWindow(window, modern))
+                        }catch(error){
+                            if(error instanceof z.ZodError){
+                                console.error("zod error: ", error.message)
+                                setDetails(undefined);
+                                setSlideIn(false);
+                            }
+                        }
                     }}
                 >
                     <span className="flex gap-2">
