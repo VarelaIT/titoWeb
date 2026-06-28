@@ -4,7 +4,7 @@ import { Page } from "../elements/pages";
 import type { IWindowInputs, TStyleVariant } from "../../scripts/types";
 import { Button } from "../elements/buttons";
 import { Sigma } from "lucide-react";
-import { calcWindow } from "../../scripts/utils";
+import { calcWindow, printWindow } from "../../scripts/utils";
 import { WINDOW_SCHEMA } from "../../scripts/zodSchemas";
 import * as z from "zod";
 import type { ClassicWindowMeasurements, ModernWindowMeasurements } from "../../scripts/windowsMeasurement";
@@ -51,6 +51,13 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                 <p className="grid gap-4 grid-cols-2">
                     <span className="text-right">Altura de los cristales</span>
                     <b >{details.getGlassHeigth().toFixed(2)}</b>
+                </p>
+                <p className="flex justify-center gap-4">
+                    <Button variant={buttonStyle}
+                        onClick={()=> printWindow(details, modern)}
+                    >
+                        Imprimir
+                    </Button>
                 </p>
             </article>
         }
