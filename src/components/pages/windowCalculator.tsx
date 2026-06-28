@@ -1,17 +1,17 @@
 import { useMemo, useState } from "react";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
-import type { IWindowInputs } from "../../scripts/types";
+import type { IWindowInputs, TStyleVariant } from "../../scripts/types";
 import { Button } from "../elements/buttons";
 import { Sigma } from "lucide-react";
 import { calcWindow } from "../../scripts/utils";
 import { WINDOW_SCHEMA } from "../../scripts/zodSchemas";
 import * as z from "zod";
-import type { ClassicWindowMeasurements } from "../../scripts/windowsMeasurement";
+import type { ClassicWindowMeasurements, ModernWindowMeasurements } from "../../scripts/windowsMeasurement";
 
-export function WindowCalculator({modern}: {modern:boolean}){
+export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonStyle?: TStyleVariant}){
     const [window, setWindow] = useState<IWindowInputs>({base: undefined, height: undefined, panels: "2"});
-    const [details, setDetails] = useState<ClassicWindowMeasurements | undefined>(undefined);
+    const [details, setDetails] = useState<ClassicWindowMeasurements | ModernWindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
 
     useMemo(()=> setDetails(undefined), [modern]);
@@ -59,7 +59,7 @@ export function WindowCalculator({modern}: {modern:boolean}){
 
     return (
         <Page>
-            <h2 className="font-bold text-xl">Ventana {modern? "Moderna" : "Tradicional"}</h2>
+            <h2 className="font-bold text-xl">Ventana {modern? "P-65" : "Tradicional"}</h2>
             <div className="overflow-hidden">
                 {Resume&& Resume}
             </div>
@@ -119,6 +119,7 @@ export function WindowCalculator({modern}: {modern:boolean}){
                 </p>
 
                 <Button
+                    variant={buttonStyle}
                     onClick={()=> {
                         const newWindow = {
                             base: parseFloat(window.base?? ""),

@@ -28,7 +28,7 @@ export interface IElementProps {
     style?: React.CSSProperties,
 }
 
-export type TStyleVariant = "primary" | "transparent";
+export type TStyleVariant = "primary" | "emerald" | "transparent";
 
 export enum EStorage{
     THEME = "theme",

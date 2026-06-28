@@ -5,6 +5,8 @@ import { TabButton } from "../elements/buttons";
 export type Tab = {
     legend: string,
     renderer: ReactNode,
+    tabStyle: string,
+    tabBtnStyle: string,
 }
 
 export interface ITabsProps{
@@ -21,9 +23,10 @@ export function Tabs({tabs}: ITabsProps){
                     legend={tab.legend} 
                     selected={selected === i}
                     onClick={()=> setSelected(i)}
+                    tabStyle={tab.tabBtnStyle}
                 />
             )}
-            <div className="bg-slate-600 dark:bg-slate-900 p-1 rounded-bl-md rounded-br-md rounded-tr-md">
+            <div className={"p-1 rounded-bl-md rounded-br-md rounded-tr-md " + tabs[selected].tabStyle}>
                 {tabs[selected].renderer}
             </div>
 
