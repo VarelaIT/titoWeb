@@ -65,13 +65,13 @@ export class ClassicWindowMeasurements{
     }
 
     panelDiff={
-        jambas: .75,
+        jambas: .88,
         alfaisal: .125
     }
 
     glassDiff={
         base: 1.330,
-        height: 3.75
+        height: 3.88
     }
 
     base: number;
