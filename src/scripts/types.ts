@@ -33,3 +33,9 @@ export type TStyleVariant = "primary" | "emerald" | "transparent";
 export enum EStorage{
     THEME = "theme",
 }
+
+export interface IProject {
+    title: string, 
+    date: Date, 
+    total: number
+}

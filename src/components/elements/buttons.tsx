@@ -4,9 +4,10 @@ import type { IElementProps, ILayoutProps, TStyleVariant } from "../../scripts/t
 export interface IButtonProps extends ILayoutProps{
     variant?: TStyleVariant,
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
+    type?: "button" | "submit",
 }
 
-export function Button({variant, className, style, onClick, children}: IButtonProps){
+export function Button({variant, className, style, onClick, children, type}: IButtonProps){
     const baseStyle  = getClassVariant(variant);
 
     function getClassVariant(variant?: TStyleVariant){
@@ -36,6 +37,7 @@ export function Button({variant, className, style, onClick, children}: IButtonPr
         className={baseStyle + " " + className}
         style={style}
         onClick={onClick}
+        type={type?? "button"}
     >
         {children}
     </button>
