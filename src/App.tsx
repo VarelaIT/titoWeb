@@ -1,11 +1,18 @@
 import './App.css'
 import { AppHeader } from './components/layout/header'
 import { Tabs, type Tab } from './components/layout/tab'
+import ProjectPage from './components/pages/project';
 import { WindowCalculator } from './components/pages/windowCalculator';
 
 function App() {
 
   const tabs: Tab[] = [
+    {
+      legend: "Projecto",
+      renderer: <ProjectPage style={"blue"}/>,
+      tabStyle: " bg-blue-600 dark:bg-blue-900",
+      tabBtnStyle: "bg-blue-600 text-white dark:bg-blue-800 dark:text-gray-200 hover:bg-blue-700 dark:hover:bg-blue-900",
+    },
     {
       legend: "P-65",
       renderer: <WindowCalculator modern={true} buttonStyle={"emerald"}/>,

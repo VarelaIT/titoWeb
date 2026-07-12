@@ -8,13 +8,19 @@ import { calcWindow, printWindow } from "../../scripts/utils";
 import { WINDOW_SCHEMA } from "../../scripts/zodSchemas";
 import * as z from "zod";
 import type { ClassicWindowMeasurements, ModernWindowMeasurements } from "../../scripts/windowsMeasurement";
+import { PRESETS_STORAGE } from "../../scripts/presetStorage";
 
 export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonStyle?: TStyleVariant}){
     const [window, setWindow] = useState<IWindowInputs>({base: undefined, height: undefined, panels: "2"});
     const [details, setDetails] = useState<ClassicWindowMeasurements | ModernWindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
+    const project = {title: "", date: new Date(), total: 0};
 
     useMemo(()=> setDetails(undefined), [modern]);
+
+    function save(wm: ClassicWindowMeasurements | ModernWindowMeasurements){
+        PRESETS_STORAGE.insert(project.title, project.title + Date.now(),  {type: wm.type, base: wm.base, height: wm.height});
+    }
 
     const Resume = useMemo(()=> {
         const animation = slideIn? "motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-md " : "";
@@ -54,9 +60,9 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                 </p>
                 <p className="flex justify-center gap-4">
                     <Button variant={buttonStyle}
-                        onClick={()=> printWindow(details, modern)}
+                        onClick={()=> save(details)}
                     >
-                        Imprimir
+                       Guardar 
                     </Button>
                 </p>
             </article>

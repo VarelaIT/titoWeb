@@ -1,6 +1,8 @@
 import type { TWindow } from "./types";
 
 export class ModernWindowMeasurements{
+    type = "P-65"
+
     frameDiff= {
         base: 1.5,
         height: .13
@@ -55,6 +57,8 @@ export class ModernWindowMeasurements{
 
 
 export class ClassicWindowMeasurements{
+    type = "classic"
+
     frameDiff= {
         base: .25,
         height: .5
