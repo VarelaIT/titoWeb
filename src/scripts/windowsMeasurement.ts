@@ -70,7 +70,7 @@ export class ClassicWindowMeasurements{
     }
 
     glassDiff={
-        base: 1.125,
+        base: 1.330,
         height: 3.75
     }
 
