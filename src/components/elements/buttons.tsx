@@ -14,6 +14,10 @@ export function Button({variant, className, style, onClick, children, type}: IBu
         let result = "p-2 rounded-md flex justify-center cursor-pointer ";
 
         switch(variant){
+            case "error":
+                result += "bg-red-600 text-white dark:bg-red-800 dark:text-gray-200 hover:bg-red-700 dark:hover:bg-red-900 "
+                    + " hover:shadow-md dark:hover:shadow-md dark:shadow-red-500/50"
+                    break;
             case "emerald":
                 result += "bg-emerald-600 text-white dark:bg-emerald-800 dark:text-gray-200 hover:bg-emerald-700 dark:hover:bg-emerald-900 "
                     + " hover:shadow-md dark:hover:shadow-md dark:shadow-emerald-500/50"

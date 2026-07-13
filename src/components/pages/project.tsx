@@ -4,7 +4,7 @@ import { Button } from "../elements/buttons";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
 import { useProject } from "../providers/project.provider";
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import "../../styles/dialog.css"
 
 
@@ -23,8 +23,10 @@ export default function ProjectPage({style}: {style: string}){
                 <article>
                     <p>Dia: {project.date.toLocaleDateString()}</p>
                     <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
-
                 </article>
+                <div className="py-4">
+
+                </div>
             </Page>
         </section>
     )
@@ -36,27 +38,60 @@ interface IProjectFormProps {
     triggerChild?: boolean
     children: ReactNode
 }
-function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
 
+function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
+    const [formState, setFormState] = useState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+    
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild={triggerChild}>
                 {children}
             </Dialog.Trigger>
             <Dialog.Portal>
-                <Dialog.Overlay className={"DialogOverlay"}/>
-                <Dialog.Content className={"DialogContent"}>
-                    <Dialog.Title>
+                <Dialog.Overlay className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}/>
+                <Dialog.Content  className={"absolute bg-white p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2"}>
+                    <Dialog.Title className="font-bold text-xl">
                         Editar Projecto
                     </Dialog.Title>
-                    <form className="grid gap-2" onSubmit={(e)=> e.preventDefault()}>
-                        <Input value={project.title} onChange={(props)=> {
-                            console.log(props)
-                        }}/>
-                        <Dialog.Close asChild>
-                            <Button>Editar</Button>
-                        </Dialog.Close>
+                    <form className="grid gap-2 px-2 py-4" onSubmit={(e)=> e.preventDefault()}>
+                        <Input 
+                            value={formState.title} 
+                            onChange={(props)=> {
+                                setFormState({...formState, title: props.target.value})
+                            }}
+                        />
+                        <Input 
+                            type={"datetime"}
+                            value={formState.date} 
+                            onChange={(props)=> {
+                                setFormState({...formState, date: props.target.value})
+                            }}
+                        />
+                        <Input 
+                            type="number"
+                            value={formState.total} 
+                            onChange={(props)=> {
+                                setFormState({...formState, total: props.target.value})
+                            }}
+                        />
                     </form>
+                    <footer className="flex gap-2 justify-end">
+                        <Dialog.Close asChild>
+                            <Button variant="error">Cerrar</Button> 
+                        </Dialog.Close>
+                        <Dialog.Close asChild>
+                            <Button 
+                                onClick={()=> {
+                                    const total= Number.parseFloat(formState.total)
+                                    setProject({
+                                    title: formState.title,
+                                    date: new Date(formState.date),
+                                    total: Number.isNaN(total)? 0 : total,
+                                    });
+                                }}
+                            >editar</Button>
+                        </Dialog.Close>
+                    </footer>
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>

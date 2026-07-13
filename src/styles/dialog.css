@@ -13,6 +13,9 @@
 }
 
 .DialogContent {
+	top: 0;
+	left: 0;
+	min-width: 300px;
 	background: white;
 	padding: 30px;
 	border-radius: 4px;

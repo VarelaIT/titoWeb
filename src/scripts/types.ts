@@ -17,6 +17,7 @@ export interface IBaseInput{
     inputMode?: "search" | "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal",
     pattern?: string,
     disable?: boolean,
+    type?: "text" | "number" | "float" | "date" | "datetime",
 }
 
 export interface ILayoutProps extends IElementProps{
@@ -28,7 +29,7 @@ export interface IElementProps {
     style?: React.CSSProperties,
 }
 
-export type TStyleVariant = "primary" | "emerald" | "transparent";
+export type TStyleVariant = "primary" | "emerald" | "transparent" | "error";
 
 export enum EStorage{
     THEME = "theme",
@@ -37,5 +38,5 @@ export enum EStorage{
 export interface IProject {
     title: string, 
     date: Date, 
-    total: number
+    total: number,
 }
