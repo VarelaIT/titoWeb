@@ -6,10 +6,29 @@ import { Page } from "../elements/pages";
 import { useProject } from "../providers/project.provider";
 import { useState, type ReactNode } from "react";
 import "../../styles/dialog.css"
+import { Table, TableBody, TableHead } from "../elements/tables/table";
 
 
 export default function ProjectPage({style}: {style: string}){
     const {project, setProject} = useProject();
+    const data = [
+        {
+            name: "Ismael",
+            last: "varela"
+        },
+        {
+            name: "Ismael",
+            last: "varela"
+        },
+        {
+            name: "some one",
+            last: "varela"
+        },
+        {
+            name: "Ismael",
+            last: "varela"
+        },
+    ]
 
     return (
         <section>
@@ -25,7 +44,18 @@ export default function ProjectPage({style}: {style: string}){
                     <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
                 </article>
                 <div className="py-4">
-
+                    <Table 
+                        data={data} 
+                        columns={Object.keys(data[0]).map((key)=>(
+                            {
+                                accessorKey: key,
+                                header: key,
+                            }
+                        ))}
+                    >
+                        <TableHead/>
+                        <TableBody/>
+                    </Table>
                 </div>
             </Page>
         </section>
