@@ -7,19 +7,21 @@ import { Sigma } from "lucide-react";
 import { calcWindow, printWindow } from "../../scripts/utils";
 import { WINDOW_SCHEMA } from "../../scripts/zodSchemas";
 import * as z from "zod";
-import type { ClassicWindowMeasurements, ModernWindowMeasurements } from "../../scripts/windowsMeasurement";
+import type { ClassicWindowMeasurements, ModernWindowMeasurements, WindowMeasurements } from "../../scripts/windowsMeasurement";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
+import { useProject } from "../providers/project.provider";
 
 export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonStyle?: TStyleVariant}){
-    const [window, setWindow] = useState<IWindowInputs>({base: undefined, height: undefined, panels: "2"});
-    const [details, setDetails] = useState<ClassicWindowMeasurements | ModernWindowMeasurements | undefined>(undefined);
+    const [window, setWindow] = useState<IWindowInputs>({type: modern? "p-65" : "classic", base: undefined, height: undefined, panels: "2"});
+    const [details, setDetails] = useState<WindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
-    const project = {title: "", date: new Date(), total: 0};
+    const {project, setProject} = useProject();
 
     useMemo(()=> setDetails(undefined), [modern]);
 
-    function save(wm: ClassicWindowMeasurements | ModernWindowMeasurements){
-        PRESETS_STORAGE.insert(project.title, project.title + Date.now(),  {type: wm.type, base: wm.base, height: wm.height});
+    function save(wm: WindowMeasurements){
+        const newItems = project.items? [...project.items, wm] : [wm];
+        setProject({...project, items: newItems})
     }
 
     const Resume = useMemo(()=> {
@@ -135,12 +137,13 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                     variant={buttonStyle}
                     onClick={()=> {
                         const newWindow = {
+                            type: modern? "p-65" : "classic",
                             base: parseFloat(window.base?? ""),
                             height: parseFloat(window.height?? ""),
                             panels: parseInt(window.panels?? ""),
                         }
                         try{
-                        setDetails(calcWindow(WINDOW_SCHEMA.parse(newWindow), modern))
+                        setDetails(calcWindow(WINDOW_SCHEMA.parse(newWindow)))
                         setSlideIn(true)
                         }catch(error){
                             if(error instanceof z.ZodError){

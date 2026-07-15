@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import * as z from "zod";
 import type { WINDOW_SCHEMA } from "./zodSchemas";
+import type { ClassicWindowMeasurements, ModernWindowMeasurements } from "./windowsMeasurement";
 
 export type TWindow = z.infer<typeof WINDOW_SCHEMA>;
 
 export interface IWindowInputs {
+    type: TWindow["type"],
     base: string | undefined,
     height: string | undefined, 
     panels: string | undefined,
@@ -39,4 +41,20 @@ export interface IProject {
     title: string, 
     date: Date, 
     total: number,
+    items?: Array<ClassicWindowMeasurements | ModernWindowMeasurements>,
+}
+
+export interface IFrameDiff {
+  base: number;
+  height: number;
+}
+
+export interface IPanelDiff {
+  jambas: number;
+  alfaisal: number;
+}
+
+export interface IGlassDiff {
+  base: number;
+  height: number;
 }

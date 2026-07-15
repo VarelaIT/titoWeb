@@ -1,11 +1,9 @@
 import type { TWindow } from "./types";
-import { ClassicWindowMeasurements, ModernWindowMeasurements } from "./windowsMeasurement";
+import { ClassicWindowMeasurements, ModernWindowMeasurements, WindowMeasurements } from "./windowsMeasurement";
 import Papa, { type UnparseObject } from 'papaparse';
 
-export function calcWindow(window: TWindow, modern: boolean){
-    if(modern)
-        return new ModernWindowMeasurements(window);
-    return new ClassicWindowMeasurements(window);
+export function calcWindow(window: TWindow){
+    return new WindowMeasurements(window);
 }
 
 const fileHeaders = {
@@ -27,7 +25,7 @@ const fileHeaders = {
         ]
     }
 }
-export function exportProject(project: Array<ClassicWindowMeasurements | ModernWindowMeasurements>, description: {title: string, date: string, total: string}): string{
+export function exportProject(project: Array<WindowMeasurements>, description: {title: string, date: string, total: string}): string{
     const conf: UnparseObject<unknown>= {
         fields: fileHeaders.es.window,
         data: project.map((win)=> {
@@ -59,7 +57,7 @@ export function exportProject(project: Array<ClassicWindowMeasurements | ModernW
     return Papa.unparse(conf);
 }
 
-export function printWindow(wm: ClassicWindowMeasurements | ModernWindowMeasurements, modern: boolean){
+export function printWindow(wm: WindowMeasurements, modern: boolean){
     const printWindow = window.open("", "_blank");
 
     if(printWindow){
