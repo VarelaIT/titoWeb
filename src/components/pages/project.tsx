@@ -4,31 +4,59 @@ import { Button } from "../elements/buttons";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
 import { useProject } from "../providers/project.provider";
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import "../../styles/dialog.css"
 import { Table, TableBody, TableHead } from "../elements/tables/table";
+import { WindowMeasurements } from "../../scripts/windowsMeasurement";
+import type { ColumnDef } from "@tanstack/react-table";
 
 
 export default function ProjectPage({style}: {style: string}){
     const {project, setProject} = useProject();
-    const data = [
-        {
-            name: "Ismael",
-            last: "varela"
-        },
-        {
-            name: "Ismael",
-            last: "varela"
-        },
-        {
-            name: "some one",
-            last: "varela"
-        },
-        {
-            name: "Ismael",
-            last: "varela"
-        },
-    ]
+    const columns = useMemo<ColumnDef<WindowMeasurements>[]>(()=> {
+        return [
+            {
+                header: "Tipo",
+                accessorKey: "type",
+            },
+            {
+                header: "Base",
+                accessorKey: "base",
+            },
+            {
+                header: "Altura",
+                accessorKey: "height",
+            },
+            {
+                header: "Paneles",
+                accessorKey: "panels",
+            },
+            {
+                header: "Rieles",
+                accessorFn: (row)=> row.getRails(),
+            },
+            {
+                header: "Laterales",
+                accessorFn: (row)=> row.getLaterals(),
+            },
+            {
+                header: "Alfaisal",
+                accessorFn: (row)=> row.getAlfaisal(),
+            },
+            {
+                header: "Jambas",
+                accessorFn: (row)=> row.getJambas(),
+            },
+            {
+                header: "Base de Cristal",
+                accessorFn: (row)=> row.getGlassBase(),
+            },
+            {
+                header: "Altura de Cristal",
+                accessorFn: (row)=> row.getGlassHeigth(),
+            },
+        ]
+    }, [project.items])
 
     return (
         <section>
@@ -44,18 +72,15 @@ export default function ProjectPage({style}: {style: string}){
                     <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
                 </article>
                 <div className="py-4">
-                    <Table 
-                        data={data} 
-                        columns={Object.keys(data[0]).map((key)=>(
-                            {
-                                accessorKey: key,
-                                header: key,
-                            }
-                        ))}
-                    >
-                        <TableHead/>
-                        <TableBody/>
-                    </Table>
+                    {project.items&& 
+                        <Table 
+                            data={project.items} 
+                            columns={columns}
+                        >
+                            <TableHead/>
+                            <TableBody/>
+                        </Table>
+                    }
                 </div>
             </Page>
         </section>
@@ -114,9 +139,10 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                                 onClick={()=> {
                                     const total= Number.parseFloat(formState.total)
                                     setProject({
-                                    title: formState.title,
-                                    date: new Date(formState.date),
-                                    total: Number.isNaN(total)? 0 : total,
+                                        ...project,
+                                        title: formState.title,
+                                        date: new Date(formState.date),
+                                        total: Number.isNaN(total)? 0 : total,
                                     });
                                 }}
                             >editar</Button>
