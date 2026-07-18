@@ -5,9 +5,10 @@ export interface IButtonProps extends ILayoutProps{
     variant?: TStyleVariant,
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
     type?: "button" | "submit",
+    title?: string,
 }
 
-export function Button({variant, className, style, onClick, children, type}: IButtonProps){
+export function Button({variant, className, style, onClick, children, type, title}: IButtonProps){
     const baseStyle  = getClassVariant(variant);
 
     function getClassVariant(variant?: TStyleVariant){
@@ -36,12 +37,13 @@ export function Button({variant, className, style, onClick, children, type}: IBu
         return result;
     }
 
-    return <button 
-        tabIndex={0}   
+    return <button
+        tabIndex={0}
         className={baseStyle + " " + className}
         style={style}
         onClick={onClick}
         type={type?? "button"}
+        title={title}
     >
         {children}
     </button>
