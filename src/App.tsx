@@ -42,7 +42,7 @@ function App() {
         }}
       >
         <AppHeader />
-        <div className='relative p-4'>
+        <div className='relative p-4 max-w-screen'>
             <Tabs tabs={tabs}/>
         </div>
       </main>

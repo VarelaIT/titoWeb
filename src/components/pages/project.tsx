@@ -12,91 +12,105 @@ import type { ColumnDef } from "@tanstack/react-table";
 
 
 export default function ProjectPage({style}: {style: string}){
-    const {project, setProject} = useProject();
-    const columns = useMemo<ColumnDef<WindowMeasurements>[]>(()=> {
-        return [
-            {
-                header: "Tipo",
-                accessorKey: "type",
-            },
-            {
-                header: "Base",
-                accessorKey: "base",
-            },
-            {
-                header: "Altura",
-                accessorKey: "height",
-            },
-            {
-                header: "Paneles",
-                accessorKey: "panels",
-            },
-            {
-                header: "Rieles",
-                accessorFn: (row)=> row.getRails(),
-            },
-            {
-                header: "Laterales",
-                accessorFn: (row)=> row.getLaterals(),
-            },
-            {
-                header: "Alfaisal",
-                accessorFn: (row)=> row.getAlfaisal(),
-            },
-            {
-                header: "Jambas",
-                accessorFn: (row)=> row.getJambas(),
-            },
-            {
-                header: "Base de Cristal",
-                accessorFn: (row)=> row.getGlassBase(),
-            },
-            {
-                header: "Altura de Cristal",
-                accessorFn: (row)=> row.getGlassHeigth(),
-            },
-        ]
-    }, [project.items])
+  const defaultColumnConf = {
+    enableColumnFilter: true,
+    enableGrouping: true,
+  };
+  const {project, setProject} = useProject();
+  const columns = useMemo<ColumnDef<WindowMeasurements>[]>(()=> {
+    return [
+      {
+        ...defaultColumnConf,
+        header: "Tipo",
+        accessorKey: "type",
+      },
+      {
+        ...defaultColumnConf,
+        header: "Base",
+        accessorKey: "base",
+      },
+      {
+        ...defaultColumnConf,
+        header: "Altura",
+        accessorKey: "height",
+      },
+      {
+        ...defaultColumnConf,
+        header: "Paneles",
+        accessorKey: "panels",
+      },
+      {
+        ...defaultColumnConf,
+        header: "Rieles",
+        accessorFn: (row)=> row.getRails(),
+      },
+      {
+        ...defaultColumnConf,
+        header: "Laterales",
+        accessorFn: (row)=> row.getLaterals(),
+      },
+      {
+        ...defaultColumnConf,
+        header: "Alfaisal",
+        accessorFn: (row)=> row.getAlfaisal(),
+      },
+      {
+        ...defaultColumnConf,
+        header: "Jambas",
+        accessorFn: (row)=> row.getJambas(),
+      },
+      {
+        ...defaultColumnConf,
+        header: "Base de Cristal",
+        accessorFn: (row)=> row.getGlassBase(),
+      },
+      {
+        ...defaultColumnConf,
+        header: "Altura de Cristal",
+        accessorFn: (row)=> row.getGlassHeigth(),
+      },
+    ]
+  }, [project.items])
 
-    return (
-        <section>
-            <Page>
-                <header className="flex justify-between w-full">
-                    <h2 className={"text-2xl font-bold"}>{project.title}</h2>
-                    <ProjectForm project={project} setProject={setProject} triggerChild={true}>
-                        <Button variant="primary">Editar</Button>
-                    </ProjectForm>
-                </header>
-                <article>
-                    <p>Dia: {project.date.toLocaleDateString()}</p>
-                    <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
-                </article>
-                <div className="py-4">
-                    {project.items&& 
-                        <Table 
-                            data={project.items} 
-                            columns={columns}
-                        >
-                            <TableHead/>
-                            <TableBody/>
-                        </Table>
-                    }
-                </div>
-            </Page>
-        </section>
-    )
+  return (
+    <section>
+      <Page>
+        <header className="flex justify-between w-full">
+          <h2 className={"text-2xl font-bold"}>{project.title}</h2>
+          <ProjectForm project={project} setProject={setProject} triggerChild={true}>
+            <Button variant="primary">Editar</Button>
+          </ProjectForm>
+        </header>
+        <article>
+          <p>Dia: {project.date.toLocaleDateString()}</p>
+          <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
+        </article>
+        <div className="py-4">
+          {project.items&&
+            <Table
+              data={project.items}
+              columns={columns}
+            >
+              <TableHead/>
+              <TableBody/>
+            </Table>
+          }
+        </div>
+      </Page>
+    </section>
+  )
 }
 
 interface IProjectFormProps {
-    project: IProject, 
-    setProject: (project: IProject)=> void, 
+    project: IProject,
+    setProject: (project: IProject)=> void,
     triggerChild?: boolean
     children: ReactNode
 }
 
 function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
     const [formState, setFormState] = useState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
-    
+
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild={triggerChild}>
@@ -109,22 +123,22 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                         Editar Projecto
                     </Dialog.Title>
                     <form className="grid gap-2 px-2 py-4" onSubmit={(e)=> e.preventDefault()}>
-                        <Input 
-                            value={formState.title} 
+                        <Input
+                            value={formState.title}
                             onChange={(props)=> {
                                 setFormState({...formState, title: props.target.value})
                             }}
                         />
-                        <Input 
+                        <Input
                             type={"datetime"}
-                            value={formState.date} 
+                            value={formState.date}
                             onChange={(props)=> {
                                 setFormState({...formState, date: props.target.value})
                             }}
                         />
-                        <Input 
+                        <Input
                             type="number"
-                            value={formState.total} 
+                            value={formState.total}
                             onChange={(props)=> {
                                 setFormState({...formState, total: props.target.value})
                             }}
@@ -132,10 +146,10 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                     </form>
                     <footer className="flex gap-2 justify-end">
                         <Dialog.Close asChild>
-                            <Button variant="error">Cerrar</Button> 
+                            <Button variant="error">Cerrar</Button>
                         </Dialog.Close>
                         <Dialog.Close asChild>
-                            <Button 
+                            <Button
                                 onClick={()=> {
                                     const total= Number.parseFloat(formState.total)
                                     setProject({
