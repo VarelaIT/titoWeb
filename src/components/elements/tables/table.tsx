@@ -1,47 +1,36 @@
 import { flexRender, getCoreRowModel, getFilteredRowModel, getGroupedRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { TableProvider, useTableInstance } from "../../providers/table.provider";
+import { Group, Ungroup } from "lucide-react";
+import { Button } from "../buttons";
 
 export interface ITableProps{
-    data: any[],
-    columns: ColumnDef<any>[],
+    data: unknown[],
+    columns: ColumnDef<unknown>[],
     children: ReactNode,
 }
 
 export function Table({data, columns, children}: ITableProps) {
 
-    return (
-        <TableProvider>
-            <TableContainer data={data} columns={columns}>
-                {children}
-            </TableContainer>
-        </TableProvider>
-    );
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  return (
+    <TableProvider table={{table}}>
+      <table className="w-full overflow-auto">
+        {children}
+      </table>
+    </TableProvider>
+  );
 }
 
-function TableContainer({data, columns, children}: ITableProps){
-
-    const {table: tableState, setTable} = useTableInstance();
-    const table = useReactTable({
-      data,
-      columns,
-      getCoreRowModel: getCoreRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      getGroupedRowModel: getGroupedRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-    });
-
-    useEffect(()=> {
-        setTable(table);
-    }, [table])
-
-    return (
-        <table className="w-full overflow-auto">
-            {children}
-        </table>
-    );
-}
 
 export function TableHead(){
     const {table} = useTableInstance();
@@ -60,10 +49,28 @@ export function TableHead(){
                     colSpan={header.colSpan}
                     className={`font-bold p-2 border-b border-r`}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
+                    <div>
+                      <span>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                      </span>
+                      <ul>
+                        {header.column.getCanGroup() &&
+                          <Button
+                            variant="transparent"
+                            onClick={() => header.column.toggleGrouping()}
+                          >
+                            {header.column.getIsGrouped()?
+                              <Ungroup />
+                              :
+                              <Group />
+                            }
+                          </Button>
+                        }
+                      </ul>
+                    </div>
                   </th>
                 ),
               )}

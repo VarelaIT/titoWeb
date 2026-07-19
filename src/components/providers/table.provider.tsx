@@ -1,18 +1,16 @@
 import type { Table } from "@tanstack/react-table";
-import { createContext, type ReactNode, useContext, useState } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 
 export interface ITableContext{
-    table?: Table<any>,
-    setTable: (table?: Table<any>) => void,
+    table: Table<unknown>,
 }
 
 const TableContext = createContext<ITableContext | undefined>(undefined);
 
-export function TableProvider({children}: {children: ReactNode}){
-    const [table, setTable] = useState<Table<any> | undefined>(undefined);
+export function TableProvider({children, table}: {table: ITableContext, children: ReactNode}){
 
     return (
-        <TableContext.Provider value={{table, setTable}}>
+        <TableContext.Provider value={table}>
             {children}
         </TableContext.Provider>
     );
