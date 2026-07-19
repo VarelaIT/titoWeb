@@ -1,5 +1,5 @@
 import type { TWindow } from "./types";
-import { ClassicWindowMeasurements, ModernWindowMeasurements, WindowMeasurements } from "./windowsMeasurement";
+import { WindowMeasurements } from "./windowsMeasurement";
 import Papa, { type UnparseObject } from 'papaparse';
 
 export function calcWindow(window: TWindow){
@@ -43,7 +43,7 @@ export function exportProject(project: Array<WindowMeasurements>, description: {
     };
 
     const details = [
-        ["..."], 
+        ["..."],
         fileHeaders.es.details,
         [
             description.title,
@@ -53,7 +53,7 @@ export function exportProject(project: Array<WindowMeasurements>, description: {
     ]
 
     conf.data = [...conf.data, ...details];
-    
+
     return Papa.unparse(conf);
 }
 

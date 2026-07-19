@@ -1,5 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-import type { IProject } from "../../scripts/types";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { STORAGE_CONSTANTS, type IProject, type IWindowInputs, type TWindow } from "../../scripts/types";
+import { PRESETS_STORAGE } from "../../scripts/presetStorage";
+import { WindowMeasurements } from "../../scripts/windowsMeasurement";
 
 
 export interface IProjectContext{
@@ -10,13 +12,45 @@ export interface IProjectContext{
 const ProjectContext = createContext<IProjectContext>({project: {title: "Sin Titulo", date: new Date(), total: 0}, setProject: (project: IProject)=> console.log("Project context initialized in " + project + " mode.")});
 
 export function ProjectProvider({children}: {children: ReactNode}){
-    const [project, setProject] = useState<IProject>({title: "Sin Titulo", date: new Date(), total: 0});
+  const [project, setProject] = useState<IProject>(loadProject());
 
-    return (
-        <ProjectContext.Provider value={{project, setProject}}>
-            {children}
-        </ProjectContext.Provider>
+  useEffect(() => {
+    PRESETS_STORAGE.insert(
+      STORAGE_CONSTANTS.PROJECTS,
+      project.title,
+      {
+        date: project.date,
+        total: project.total,
+        items: !project.items ? []
+          : project.items.map((item: WindowMeasurements) => ({
+            type: item.type,
+            base: item.base,
+            height: item.height,
+            panels: item.panels,
+          }))
+      }
     );
+  }, [project])
+
+  function loadProject(): IProject {
+    const storedProject = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS)?.pop();
+    if (storedProject) {
+      console.log("Should be the last stored project", storedProject);
+      return {
+        title: storedProject.key,
+        date: new Date(storedProject.value.date),
+        total: storedProject.value.total,
+        items: storedProject.value.items.map((item: TWindow) => new WindowMeasurements({ type: item.type, base: item.base, height: item.height, panels: item.panels })),
+      };
+    }
+    return { title: "Sin Titulo", date: new Date(), total: 0, items: []};
+  }
+
+  return (
+    <ProjectContext.Provider value={{project, setProject}}>
+      {children}
+    </ProjectContext.Provider>
+  );
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
