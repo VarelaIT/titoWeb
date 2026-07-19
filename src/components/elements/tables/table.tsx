@@ -1,7 +1,7 @@
-import { flexRender, getCoreRowModel, getFilteredRowModel, getGroupedRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { type ReactNode } from "react";
 import { TableProvider, useTableInstance } from "../../providers/table.provider";
-import { Group, Ungroup } from "lucide-react";
+import { ChevronDown, ChevronUp, Group, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
 
 export interface ITableProps{
@@ -20,6 +20,7 @@ export function Table({data, columns, children}: ITableProps) {
     getGroupedRowModel: getGroupedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
   });
 
   return (
@@ -49,7 +50,7 @@ export function TableHead(){
                     colSpan={header.colSpan}
                     className={`font-bold p-2 border-b border-r`}
                   >
-                    <div>
+                    <div className="flex items-center justify-between gap-2">
                       <span>
                         {flexRender(
                           header.column.columnDef.header,
@@ -88,13 +89,28 @@ export function TableBody(){
         {table &&
           table.getRowModel().rows.map((row) => (
             <tr key={row.id}
-                className="border-l"
+              className={"border-l " + (row.getCanExpand() ? "pointer-cursor bg-gray-200" : "")}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}
                     className={`p-2 border-b border-r`}
+                    onClick={row.getToggleExpandedHandler()}
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <div className="flex gap-2">
+                    <span>
+                      {cell.getIsAggregated() ?
+                        null
+                        : cell.getIsPlaceholder() ?
+                        null
+                        :
+                        flexRender(cell.column.columnDef.cell, cell.getContext())
+                      }
+                    </span >
+                    {cell.getIsGrouped() && (<div className="flex items-center text-sm">
+                      <span>({row.getLeafRows().length})</span>
+                      {row.getIsExpanded()? <ChevronUp/> : <ChevronDown/>}
+                    </div>)}
+                  </div>
                 </td>
               ))}
             </tr>
