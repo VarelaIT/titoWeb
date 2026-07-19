@@ -1,7 +1,7 @@
 import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { type ReactNode } from "react";
 import { TableProvider, useTableInstance } from "../../providers/table.provider";
-import { ChevronDown, ChevronUp, Group, Ungroup } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, ChevronUp, Group, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
 
 export interface ITableProps{
@@ -18,7 +18,6 @@ export function Table({data, columns, children}: ITableProps) {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
   });
@@ -57,9 +56,19 @@ export function TableHead(){
                           header.getContext(),
                         )}
                       </span>
-                      <ul>
+                      <ul className="flex items-center gap-1">
+                        {header.column.getCanSort() &&
+                          <Button
+                            title="Ordenar Columna"
+                            variant="transparent"
+                            onClick={() => header.column.toggleSorting()}
+                          >
+                            {header.column.getIsSorted() === "asc" ? <ChevronDown /> : header.column.getIsSorted() === "desc" ? <ChevronsUpDown /> : <ChevronUp/>}
+                          </Button>
+                        }
                         {header.column.getCanGroup() &&
                           <Button
+                            title="Agrupar Columna"
                             variant="transparent"
                             onClick={() => header.column.toggleGrouping()}
                           >
@@ -89,7 +98,7 @@ export function TableBody(){
         {table &&
           table.getRowModel().rows.map((row) => (
             <tr key={row.id}
-              className={"border-l " + (row.getCanExpand() ? "pointer-cursor bg-gray-200" : "")}
+              className={"border-l opacity-90 hover:opacity-100 " + (row.getCanExpand() ? "cursor-pointer bg-gray-200" : "")}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}
@@ -106,10 +115,7 @@ export function TableBody(){
                         flexRender(cell.column.columnDef.cell, cell.getContext())
                       }
                     </span >
-                    {cell.getIsGrouped() && (<div className="flex items-center text-sm">
-                      <span>({row.getLeafRows().length})</span>
-                      {row.getIsExpanded()? <ChevronUp/> : <ChevronDown/>}
-                    </div>)}
+                    {cell.getIsGrouped() && (<span className="flex items-center text-sm">({row.getLeafRows().length})</span>)}
                   </div>
                 </td>
               ))}
