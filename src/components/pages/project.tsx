@@ -1,14 +1,17 @@
-import { Dialog } from "radix-ui";
-import type { IProject } from "../../scripts/types";
+import { Dialog, DropdownMenu } from "radix-ui";
+import { STORAGE_CONSTANTS, type IOption, type IProject } from "../../scripts/types";
 import { Button } from "../elements/buttons";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
 import { useProject } from "../providers/project.provider";
-import { useMemo, useState, type ReactNode } from "react";
+import { use, useEffect, useMemo, useState, type ReactNode } from "react";
 import "../../styles/dialog.css"
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Dropdown } from "../elements/dropdown/dropdown";
+import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
+import { ChevronDown } from "lucide-react";
 
 
 export default function ProjectPage({style}: {style: string}){
@@ -77,9 +80,12 @@ export default function ProjectPage({style}: {style: string}){
       <Page>
         <header className="flex justify-between w-full">
           <h2 className={"text-2xl font-bold"}>{project.title}</h2>
-          <ProjectForm project={project} setProject={setProject} triggerChild={true}>
-            <Button variant="primary">Editar</Button>
-          </ProjectForm>
+          <div className="flex gap-2">
+            <ProjectForm project={project} setProject={setProject} triggerChild={true}>
+              <Button variant="primary">Editar</Button>
+            </ProjectForm>
+            <ProjectSelector />
+          </div>
         </header>
         <article>
           <p>Dia: {project.date.toLocaleDateString()}</p>
@@ -101,6 +107,48 @@ export default function ProjectPage({style}: {style: string}){
   )
 }
 
+function ProjectSelector(){
+  const projects = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS);
+  const {project, setProject} = useProject();
+  const [options] = useState<IOption[]>(loadProjectOptions());
+
+  function loadProjectOptions(): IOption[] {
+    if (projects) {
+      return projects.map((p: IStoragePreset) => ({ value: p.key, label: p.key }));
+    }
+    return [];
+  }
+
+  return (
+    <Dropdown
+      options={options}
+      defaultValue={project.title}
+      onChange={(option) => {
+        const selectedProject = projects?.find(p => p.key === option.value);
+        if (selectedProject) {
+          const projectValue = selectedProject.value as unknown as IProject;
+          setProject({
+            title: option.label,
+            date: new Date(projectValue.date),
+            total: projectValue.total,
+            items: projectValue.items?.map((item) => new WindowMeasurements({
+              type: item.type,
+              base: item.base,
+              height: item.height,
+              panels: item.panels,
+            })),
+          });
+        }
+      }}
+    >
+      <Button>
+        <span>Seleccionar Projecto</span>
+        <ChevronDown/>
+      </Button>
+    </Dropdown>
+  );
+}
+
 interface IProjectFormProps {
     project: IProject,
     setProject: (project: IProject)=> void,
@@ -110,6 +158,10 @@ interface IProjectFormProps {
 
 function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
     const [formState, setFormState] = useState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+
+    useEffect(() => {
+        setFormState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+    }, [project])
 
     return (
         <Dialog.Root>

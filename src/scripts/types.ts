@@ -1,7 +1,13 @@
 import type { ReactNode } from "react";
 import * as z from "zod";
 import type { WINDOW_SCHEMA } from "./zodSchemas";
-import type { ClassicWindowMeasurements, ModernWindowMeasurements, WindowMeasurements } from "./windowsMeasurement";
+import type { WindowMeasurements } from "./windowsMeasurement";
+
+export interface IOption {
+    value: unknown;
+    label: string;
+    checked?: boolean;
+}
 
 export type TWindow = z.infer<typeof WINDOW_SCHEMA>;
 

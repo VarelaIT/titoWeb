@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { STORAGE_CONSTANTS, type IProject, type IWindowInputs, type TWindow } from "../../scripts/types";
+import { STORAGE_CONSTANTS, type IProject } from "../../scripts/types";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
 import { WindowMeasurements } from "../../scripts/windowsMeasurement";
+import { loadProject } from "../../scripts/utils";
 
 
 export interface IProjectContext{
@@ -31,20 +32,6 @@ export function ProjectProvider({children}: {children: ReactNode}){
       }
     );
   }, [project])
-
-  function loadProject(): IProject {
-    const storedProject = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS)?.pop();
-    if (storedProject) {
-      console.log("Should be the last stored project", storedProject);
-      return {
-        title: storedProject.key,
-        date: new Date(storedProject.value.date),
-        total: storedProject.value.total,
-        items: storedProject.value.items.map((item: TWindow) => new WindowMeasurements({ type: item.type, base: item.base, height: item.height, panels: item.panels })),
-      };
-    }
-    return { title: "Sin Titulo", date: new Date(), total: 0, items: []};
-  }
 
   return (
     <ProjectContext.Provider value={{project, setProject}}>

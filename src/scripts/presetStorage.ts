@@ -10,12 +10,12 @@ export class PRESETS_STORAGE {
             return undefined;
         }
     }
-   
+
     static save(storageName: string, storageObject: IStoragePreset[]){
         if (typeof window === "undefined") return;
         localStorage.setItem(storageName, JSON.stringify(storageObject));
     }
- 
+
     static find(storageName: string, key:string): any{
         const presetList = this.get(storageName);
         if(presetList)
@@ -23,7 +23,7 @@ export class PRESETS_STORAGE {
         else
             return undefined;
     }
- 
+
     static insert(storageName: string, key:string, value: any): boolean{
         const preset: IStoragePreset = {
             key: key,
@@ -44,11 +44,11 @@ export class PRESETS_STORAGE {
         }else{
             presetList = [preset];
         }
- 
+
         this.save(storageName, presetList);
         return true;
     }
- 
+
     static remove(storageName: string, key:string): boolean{
         let storage = this.get(storageName);
         if(storage){
@@ -58,17 +58,17 @@ export class PRESETS_STORAGE {
         }
         return false;
     }
- 
+
     static list(storageName: string){
         return this.get(storageName);
     }
- 
+
     static clear(storageName: string){
         localStorage.removeItem(storageName);
     }
 }
- 
+
 export interface IStoragePreset {
     key: string;
-    value: any;
+    value: unknown;
 }
