@@ -1,23 +1,13 @@
 import type { Table } from "@tanstack/react-table";
-import { createContext, type ReactNode, useContext } from "react";
+import { type ReactNode } from "react";
+import type { ITableStyles } from "../../scripts/types";
+import { TableContext } from "../../scripts/contexts/tableContext";
 
-export interface ITableContext{
-    table: Table<unknown>,
-}
-
-const TableContext = createContext<ITableContext | undefined>(undefined);
-
-export function TableProvider({children, table}: {table: ITableContext, children: ReactNode}){
+export function TableProvider({children, table, styles}: {table: Table<unknown>, children: ReactNode, styles?: ITableStyles}){
 
     return (
-        <TableContext.Provider value={table}>
+        <TableContext.Provider value={{ table, styles }}>
             {children}
         </TableContext.Provider>
     );
-}
-export function useTableInstance(){
-    const context = useContext(TableContext);
-    if(!context)
-        throw new Error("Unable to create Project context.");
-    return context;
 }
