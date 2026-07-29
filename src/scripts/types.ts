@@ -3,6 +3,21 @@ import * as z from "zod";
 import type { WINDOW_SCHEMA } from "./zodSchemas";
 import type { WindowMeasurements } from "./windowsMeasurement";
 
+export interface ITableStyles {
+  head: {
+    row: string;
+    cell: string;
+  },
+  body: {
+    row: string;
+    cell: string;
+  },
+  footer: {
+    row: string;
+    cell: string;
+  }
+}
+
 export interface IOption {
     value: unknown;
     label: string;

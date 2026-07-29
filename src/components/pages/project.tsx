@@ -91,7 +91,7 @@ export default function ProjectPage({style}: {style: string}){
           <p>Dia: {project.date.toLocaleDateString()}</p>
           <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
         </article>
-        <div className="py-4 overflow-auto">
+        <div className="overflow-auto shadow-lg rounded-md">
           {project.items&&
             <Table
               data={project.items}

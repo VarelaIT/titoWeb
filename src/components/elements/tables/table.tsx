@@ -1,16 +1,18 @@
-import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { type ReactNode } from "react";
 import { TableProvider, useTableInstance } from "../../providers/table.provider";
 import { ChevronDown, ChevronsUpDown, ChevronUp, Group, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
+import type { ITableStyles } from "../../../scripts/types";
 
 export interface ITableProps{
     data: unknown[],
     columns: ColumnDef<unknown>[],
     children: ReactNode,
+    styles?: ITableStyles,
 }
 
-export function Table({data, columns, children}: ITableProps) {
+export function Table({data, columns, children, styles}: ITableProps) {
 
   const table = useReactTable({
     data,
@@ -23,8 +25,8 @@ export function Table({data, columns, children}: ITableProps) {
   });
 
   return (
-    <TableProvider table={{table}}>
-      <table className="w-full overflow-auto">
+    <TableProvider table={table} styles={styles}>
+      <table>
         {children}
       </table>
     </TableProvider>
@@ -33,13 +35,13 @@ export function Table({data, columns, children}: ITableProps) {
 
 
 export function TableHead(){
-    const {table} = useTableInstance();
+    const {table, styles} = useTableInstance();
     return (
       <thead className="">
         {table &&
           table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}
-                className="border-l border-t"
+              className={styles?.head.row}
             >
               {headerGroup.headers.map(
                 (
@@ -47,7 +49,7 @@ export function TableHead(){
                 ) => (
                   <th key={header.id}
                     colSpan={header.colSpan}
-                    className={`font-bold p-2 border-b border-r`}
+                    className={styles?.head.cell}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span>
@@ -91,18 +93,18 @@ export function TableHead(){
 }
 
 export function TableBody(){
-    const {table} = useTableInstance();
+    const {table, styles} = useTableInstance();
 
     return (
       <tbody className="">
         {table &&
           table.getRowModel().rows.map((row) => (
             <tr key={row.id}
-              className={"border-l opacity-90 hover:opacity-100 " + (row.getCanExpand() ? "cursor-pointer bg-gray-200" : "")}
+              className={styles?.body.row + " opacity-90 hover:opacity-100 " + (row.getCanExpand() ? "cursor-pointer active:opacity-80" : "")}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}
-                    className={`p-2 border-b border-r`}
+                    className={styles?.body.cell}
                     onClick={row.getToggleExpandedHandler()}
                 >
                   <div className="flex gap-2">
