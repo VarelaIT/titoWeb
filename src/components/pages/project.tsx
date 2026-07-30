@@ -1,6 +1,6 @@
 import { Dialog, DropdownMenu } from "radix-ui";
 import { STORAGE_CONSTANTS, type IOption, type IProject, type ITableStyles } from "../../scripts/types";
-import { Button } from "../elements/buttons";
+import { Button, TriggerButton } from "../elements/buttons";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
 import { useProject } from "../providers/project.provider";
@@ -25,7 +25,7 @@ export default function ProjectPage({style}: {style: string}){
     head: {
       container: "",
       row: "shadow-md p-0 m-0 bg-gray-100",
-      cell: "font-medium p-2 m-0 border-r border-gray-200",
+      cell: "font-medium p-2 m-0 border-r border-gray-200 truncate",
     },
     body: {
       container: "",
@@ -161,12 +161,11 @@ function ProjectSelector(){
           });
         }
       }}
-      asChild
     >
-      <Button>
+      <TriggerButton>
         <span>Seleccionar Projecto</span>
         <ChevronDown/>
-      </Button>
+      </TriggerButton>
     </Dropdown>
   );
 }

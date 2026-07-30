@@ -27,7 +27,7 @@ export function Table({data, columns, children, styles}: ITableProps) {
 
   return (
     <TableProvider table={table} styles={styles}>
-      <table>
+      <table className="w-full">
         {children}
       </table>
     </TableProvider>
