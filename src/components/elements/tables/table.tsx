@@ -36,61 +36,66 @@ export function Table({data, columns, children, styles}: ITableProps) {
 
 
 export function TableHead(){
-    const {table, styles} = useTableInstance();
-    return (
-      <thead className={styles?.head.container}>
-        {table &&
-          table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}
-              className={styles?.head.row}
-            >
-              {headerGroup.headers.map(
-                (
-                  header, // map over the headerGroup headers array
-                ) => (
-                  <th key={header.id}
-                    colSpan={header.colSpan}
-                    className={styles?.head.cell}
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <span>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                      </span>
-                      <ul className="flex items-center gap-1">
-                        {header.column.getCanSort() &&
-                          <Button
-                            title="Ordenar Columna"
-                            variant="transparent"
-                            onClick={() => header.column.toggleSorting()}
-                          >
-                            {header.column.getIsSorted() === "asc" ? <ChevronDown /> : header.column.getIsSorted() === "desc" ? <ChevronsUpDown /> : <ChevronUp/>}
-                          </Button>
-                        }
-                        {header.column.getCanGroup() &&
-                          <Button
-                            title="Agrupar Columna"
-                            variant="transparent"
-                            onClick={() => header.column.toggleGrouping()}
-                          >
-                            {header.column.getIsGrouped()?
-                              <Ungroup />
-                              :
-                              <Group />
-                            }
-                          </Button>
-                        }
-                      </ul>
-                    </div>
-                  </th>
-                ),
-              )}
-            </tr>
-          ))}
-      </thead>
-    );
+  const iconSize = 18;
+  const buttonStyles = "px-1 py-1";
+  const {table, styles} = useTableInstance();
+
+  return (
+    <thead className={styles?.head.container}>
+      {table &&
+        table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}
+            className={styles?.head.row}
+          >
+            {headerGroup.headers.map(
+              (
+                header, // map over the headerGroup headers array
+              ) => (
+                <th key={header.id}
+                  colSpan={header.colSpan}
+                  className={styles?.head.cell}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </span>
+                    <ul className="flex items-center gap-1">
+                      {header.column.getCanSort() &&
+                        <Button
+                          title="Ordenar Columna"
+                          variant="transparent"
+                          className={buttonStyles}
+                          onClick={() => header.column.toggleSorting()}
+                        >
+                          {header.column.getIsSorted() === "asc" ? <ChevronDown size={iconSize} /> : header.column.getIsSorted() === "desc" ? <ChevronsUpDown size={iconSize} /> : <ChevronUp size={iconSize} />}
+                        </Button>
+                      }
+                      {header.column.getCanGroup() &&
+                        <Button
+                          title="Agrupar Columna"
+                          variant="transparent"
+                          className={buttonStyles}
+                          onClick={() => header.column.toggleGrouping()}
+                        >
+                          {header.column.getIsGrouped()?
+                            <Ungroup size={iconSize} />
+                            :
+                            <Group size={iconSize} />
+                          }
+                        </Button>
+                      }
+                    </ul>
+                  </div>
+                </th>
+              ),
+            )}
+          </tr>
+        ))}
+    </thead>
+  );
 }
 
 export function TableBody(){

@@ -1,18 +1,17 @@
-import { Dialog, DropdownMenu } from "radix-ui";
+import { Dialog } from "radix-ui";
 import { STORAGE_CONSTANTS, type IOption, type IProject, type ITableStyles } from "../../scripts/types";
 import { Button, TriggerButton } from "../elements/buttons";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
 import { useProject } from "../providers/project.provider";
-import { use, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import "../../styles/dialog.css"
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Dropdown } from "../elements/dropdown/dropdown";
 import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
-import { ChevronDown } from "lucide-react";
-import { he } from "zod/v4/locales";
+import { ChevronDown, Plus, Trash } from "lucide-react";
 
 
 export default function ProjectPage({style}: {style: string}){
@@ -41,6 +40,29 @@ export default function ProjectPage({style}: {style: string}){
 
   const columns = useMemo<ColumnDef<WindowMeasurements>[]>(() => {
     return [
+      {
+        ...defaultColumnConf,
+        id: "Acciones",
+        header: () => <div>
+          <Button
+            title="Agregar"
+            variant="transparent"
+            onClick={() => console.log()}
+          >
+            <Plus size={16} className="text-blue-600"/>
+          </Button>
+        </div>,
+        pinned: "left",
+        cell: ({row}) => <div className="sticky left-0">
+          <Button
+            title="Eliminar"
+            variant="transparent"
+            onClick={() => console.log(row)}
+          >
+            <Trash size={16} className="text-red-500" />
+          </Button>
+        </div>,
+      },
       {
         ...defaultColumnConf,
         header: "Tipo",
@@ -105,6 +127,9 @@ export default function ProjectPage({style}: {style: string}){
               <Button variant="primary">Editar</Button>
             </ProjectForm>
             <ProjectSelector />
+            <ProjectForm project={{ title: "", date: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
+              <Button variant="emerald">Crear</Button>
+            </ProjectForm>
           </div>
         </header>
         <article>
@@ -131,7 +156,11 @@ export default function ProjectPage({style}: {style: string}){
 function ProjectSelector(){
   const projects = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS);
   const {project, setProject} = useProject();
-  const [options] = useState<IOption[]>(loadProjectOptions());
+  const [options, setOptions] = useState<IOption[]>(loadProjectOptions());
+
+  useEffect(() => {
+    setOptions(loadProjectOptions());
+  }, [project]);
 
   function loadProjectOptions(): IOption[] {
     if (projects) {
@@ -193,7 +222,7 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                 <Dialog.Overlay className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}/>
                 <Dialog.Content  className={"absolute bg-white p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2"}>
                     <Dialog.Title className="font-bold text-xl">
-                        Editar Projecto
+                        Formulario de Projecto
                     </Dialog.Title>
                     <form className="grid gap-2 px-2 py-4" onSubmit={(e)=> e.preventDefault()}>
                         <Input
@@ -219,7 +248,7 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                     </form>
                     <footer className="flex gap-2 justify-end">
                         <Dialog.Close asChild>
-                            <Button variant="error">Cerrar</Button>
+                            <Button variant="error">Cancelar</Button>
                         </Dialog.Close>
                         <Dialog.Close asChild>
                             <Button
@@ -232,7 +261,7 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                                         total: Number.isNaN(total)? 0 : total,
                                     });
                                 }}
-                            >editar</Button>
+                            >Aceptar</Button>
                         </Dialog.Close>
                     </footer>
                 </Dialog.Content>
