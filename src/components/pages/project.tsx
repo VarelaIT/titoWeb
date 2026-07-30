@@ -1,5 +1,5 @@
 import { Dialog, DropdownMenu } from "radix-ui";
-import { STORAGE_CONSTANTS, type IOption, type IProject } from "../../scripts/types";
+import { STORAGE_CONSTANTS, type IOption, type IProject, type ITableStyles } from "../../scripts/types";
 import { Button } from "../elements/buttons";
 import { Input } from "../elements/inputs";
 import { Page } from "../elements/pages";
@@ -12,6 +12,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Dropdown } from "../elements/dropdown/dropdown";
 import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
 import { ChevronDown } from "lucide-react";
+import { he } from "zod/v4/locales";
 
 
 export default function ProjectPage({style}: {style: string}){
@@ -20,7 +21,25 @@ export default function ProjectPage({style}: {style: string}){
     enableGrouping: true,
   };
   const {project, setProject} = useProject();
-  const columns = useMemo<ColumnDef<WindowMeasurements>[]>(()=> {
+  const tableStyles: ITableStyles = {
+    head: {
+      container: "",
+      row: "shadow-md p-0 m-0 bg-gray-100",
+      cell: "font-medium p-2 m-0 border-r border-gray-200",
+    },
+    body: {
+      container: "",
+      row: "border-b border-gray-200 hover:bg-gray-300 even:bg-gray-100",
+      cell: "p-2 border-r border-gray-200",
+    },
+    footer: {
+      container: "",
+      row: "",
+      cell: "",
+    }
+  };
+
+  const columns = useMemo<ColumnDef<WindowMeasurements>[]>(() => {
     return [
       {
         ...defaultColumnConf,
@@ -45,35 +64,36 @@ export default function ProjectPage({style}: {style: string}){
       {
         ...defaultColumnConf,
         header: "Rieles",
-        accessorFn: (row)=> row.getRails(),
+        accessorFn: (row) => row.getRails(),
       },
       {
         ...defaultColumnConf,
         header: "Laterales",
-        accessorFn: (row)=> row.getLaterals(),
+        accessorFn: (row) => row.getLaterals(),
       },
       {
         ...defaultColumnConf,
         header: "Alfaisal",
-        accessorFn: (row)=> row.getAlfaisal(),
+        accessorFn: (row) => row.getAlfaisal(),
       },
       {
         ...defaultColumnConf,
         header: "Jambas",
-        accessorFn: (row)=> row.getJambas(),
+        accessorFn: (row) => row.getJambas(),
       },
       {
         ...defaultColumnConf,
         header: "Base de Cristal",
-        accessorFn: (row)=> row.getGlassBase(),
+        accessorFn: (row) => row.getGlassBase(),
       },
       {
         ...defaultColumnConf,
         header: "Altura de Cristal",
-        accessorFn: (row)=> row.getGlassHeigth(),
+        accessorFn: (row) => row.getGlassHeigth(),
       },
     ]
-  }, [project.items])
+  }, [project.items]);
+
 
   return (
     <section>
@@ -91,17 +111,18 @@ export default function ProjectPage({style}: {style: string}){
           <p>Dia: {project.date.toLocaleDateString()}</p>
           <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
         </article>
-        <div className="overflow-auto shadow-lg rounded-md">
+        <article className="overflow-auto shadow-lg rounded-md border border-gray-300 mt-4">
           {project.items&&
             <Table
               data={project.items}
               columns={columns}
+              styles={tableStyles}
             >
               <TableHead/>
               <TableBody/>
             </Table>
           }
-        </div>
+        </article>
       </Page>
     </section>
   )
@@ -140,6 +161,7 @@ function ProjectSelector(){
           });
         }
       }}
+      asChild
     >
       <Button>
         <span>Seleccionar Projecto</span>

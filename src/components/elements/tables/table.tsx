@@ -1,9 +1,10 @@
 import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { type ReactNode } from "react";
-import { TableProvider, useTableInstance } from "../../providers/table.provider";
+import { TableProvider } from "../../providers/table.provider";
 import { ChevronDown, ChevronsUpDown, ChevronUp, Group, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
 import type { ITableStyles } from "../../../scripts/types";
+import { useTableInstance } from "../../../scripts/contexts/tableContext";
 
 export interface ITableProps{
     data: unknown[],
@@ -37,7 +38,7 @@ export function Table({data, columns, children, styles}: ITableProps) {
 export function TableHead(){
     const {table, styles} = useTableInstance();
     return (
-      <thead className="">
+      <thead className={styles?.head.container}>
         {table &&
           table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}
@@ -96,11 +97,11 @@ export function TableBody(){
     const {table, styles} = useTableInstance();
 
     return (
-      <tbody className="">
+      <tbody className={styles?.body.container}>
         {table &&
           table.getRowModel().rows.map((row) => (
             <tr key={row.id}
-              className={styles?.body.row + " opacity-90 hover:opacity-100 " + (row.getCanExpand() ? "cursor-pointer active:opacity-80" : "")}
+              className={styles?.body.row + (row.getCanExpand() ? "cursor-pointer active:opacity-80" : "")}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}

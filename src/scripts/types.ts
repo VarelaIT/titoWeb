@@ -5,14 +5,17 @@ import type { WindowMeasurements } from "./windowsMeasurement";
 
 export interface ITableStyles {
   head: {
+    container: string;
     row: string;
     cell: string;
   },
   body: {
+    container: string;
     row: string;
     cell: string;
   },
   footer: {
+    container: string;
     row: string;
     cell: string;
   }
