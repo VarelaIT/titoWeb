@@ -42,12 +42,26 @@ export function WindowFormModal({
             className="grid gap-2 px-2 py-4"
             onSubmit={(e) => e.preventDefault()}
           >
-            <fieldset>
+            <fieldset className="flex justify-right gap-2">
+              <label>Base</label>
               <Input
                 type="number"
+                pattern="\d+|\d+\.\d+"
                 value={formState.base}
                 onChange={(props) => {
-                    setFormState({...formState, base: props.target.value})
+                  setFormState({ ...formState, base: props.target.value });
+                  console.log(formState, props.target.value);
+                }}
+              />
+            </fieldset>
+            <fieldset className="flex justify-right gap-2">
+              <label>Altura</label>
+              <Input
+                type="number"
+                pattern="\d+|\d+\.\d+"
+                value={formState.height}
+                onChange={(props) => {
+                  setFormState({ ...formState, base: props.target.value });
                   console.log(formState, props.target.value);
                 }}
               />
@@ -57,13 +71,13 @@ export function WindowFormModal({
             <Dialog.Close asChild>
               <Button variant="error">Cancelar</Button>
             </Dialog.Close>
-              <Button
-                onClick={() => {
-                  toast.success("Ventana Agregada.");
-                }}
-              >
-                Aceptar
-              </Button>
+            <Button
+              onClick={() => {
+                toast.success("Ventana Agregada.");
+              }}
+            >
+              Aceptar
+            </Button>
           </footer>
         </Dialog.Content>
       </Dialog.Portal>
