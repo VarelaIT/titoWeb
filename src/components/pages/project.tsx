@@ -13,6 +13,7 @@ import { Dropdown } from "../elements/dropdown/dropdown";
 import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
 import { ChevronDown, Plus, Trash } from "lucide-react";
 import { WindowFormModal } from "../elements/dialogs/modal";
+import { set } from "zod/v3";
 
 
 export default function ProjectPage({style}: {style: string}){
@@ -44,7 +45,7 @@ export default function ProjectPage({style}: {style: string}){
       {
         ...defaultColumnConf,
         id: "Acciones",
-        header: () => <WindowFormModal >
+        header: () => <WindowFormModal asChild >
           <TriggerButton
             title="Agregar"
             variant="transparent"
@@ -58,9 +59,13 @@ export default function ProjectPage({style}: {style: string}){
           <Button
             title="Eliminar"
             variant="transparent"
-            onClick={() => console.log(row)}
+            className="text-gray-600 hover:text-red-500"
+            onClick={() => {
+              console.log(row)
+              setProject({ ...project, items: project.items?.filter((item) => item !== row.original) })
+            }}
           >
-            <Trash size={16} className="text-red-500" />
+            <Trash size={16} />
           </Button>
         </div>,
       },

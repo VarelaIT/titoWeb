@@ -12,7 +12,7 @@ import { useProject } from "../../providers/project.provider";
 import { Dropdown } from "../dropdown/dropdown";
 
 interface IWindowFormModalProps {
-  triggerChild?: boolean;
+  asChild?: boolean;
   children: ReactNode;
 }
 
@@ -31,7 +31,7 @@ function FieldError({ errors }: { errors: unknown[] }) {
 }
 
 export function WindowFormModal({
-  triggerChild,
+  asChild,
   children,
 }: IWindowFormModalProps) {
   const { project, setProject } = useProject();
@@ -65,7 +65,7 @@ export function WindowFormModal({
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger asChild={triggerChild}>{children}</Dialog.Trigger>
+      <Dialog.Trigger asChild={asChild}>{children}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay
           className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}
