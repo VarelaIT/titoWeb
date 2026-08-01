@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify';
 import './App.css'
 import { AppHeader } from './components/layout/header'
 import { Tabs, type Tab } from './components/layout/tab'
@@ -46,6 +47,7 @@ function App() {
             <Tabs tabs={tabs}/>
         </div>
       </main>
+      <ToastContainer/>
     </ProjectProvider>
   )
 }
