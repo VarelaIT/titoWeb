@@ -1,26 +1,58 @@
 import { Dialog } from "radix-ui";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { useForm } from "@tanstack/react-form";
 import { Input } from "../inputs";
 import { Button } from "../buttons";
 import { toast } from "react-toastify";
+import type { TWindow } from "../../../scripts/types";
+import { WINDOW_SCHEMA } from "../../../scripts/zodSchemas";
+import { calcWindow } from "../../../scripts/utils";
+import { XIcon } from "lucide-react";
+import { useProject } from "../../providers/project.provider";
 
 interface IWindowFormModalProps {
   triggerChild?: boolean;
   children: ReactNode;
 }
 
+function FieldError({ errors }: { errors: unknown[] }) {
+  const message = errors
+    .map((error) =>
+      typeof error === "string"
+        ? error
+        : (error as { message?: string } | undefined)?.message,
+    )
+    .find(Boolean);
+
+  if (!message) return null;
+
+  return <p className="w-full text-sm text-red-600">{message}</p>;
+}
+
 export function WindowFormModal({
   triggerChild,
   children,
 }: IWindowFormModalProps) {
-  const [formState, setFormState] = useState<{
-    type: "clasic" | "p-65" | null;
-    base: string;
-    height: string;
-  }>({
-    type: null,
-    base: '',
-    height: '',
+  const { project, setProject } = useProject();
+  const form = useForm({
+    // NaN marks an empty numeric field, so the schema rejects it until it is filled.
+    defaultValues: {
+      type: "classic",
+      base: Number.NaN,
+      height: Number.NaN,
+      panels: 2,
+    } as TWindow,
+    validators: { onChange: WINDOW_SCHEMA },
+    onSubmit: ({ value }) => {
+      const measurements = calcWindow(value);
+      setProject({
+        ...project,
+        items: project.items ? [...project.items, measurements] : [measurements],
+      });
+    },
+    onSubmitInvalid: () => {
+      toast.error("Revisa los datos de la ventana.");
+    },
   });
 
   return (
@@ -34,50 +66,74 @@ export function WindowFormModal({
           className={
             "absolute bg-white p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2"
           }
+          onInteractOutside={(e) => e.preventDefault()}
         >
-          <Dialog.Title className="font-bold text-xl">
-            Agregar Ventana
-          </Dialog.Title>
+          <header className="flex justify-between">
+            <Dialog.Title className="font-bold text-xl">
+              Agregar Ventana
+            </Dialog.Title>
+            <Dialog.Close>
+              <Button variant="transparent" className="px-1 py-1">
+                <XIcon className="text-red-600" size={18} />
+              </Button>
+            </Dialog.Close>
+          </header>
           <form
             className="grid gap-2 px-2 py-4"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
           >
-            <fieldset className="flex justify-right gap-2">
-              <label>Base</label>
-              <Input
-                type="number"
-                pattern="\d+|\d+\.\d+"
-                value={formState.base}
-                onChange={(props) => {
-                  setFormState({ ...formState, base: props.target.value });
-                  console.log(formState, props.target.value);
-                }}
-              />
-            </fieldset>
-            <fieldset className="flex justify-right gap-2">
-              <label>Altura</label>
-              <Input
-                type="number"
-                pattern="\d+|\d+\.\d+"
-                value={formState.height}
-                onChange={(props) => {
-                  setFormState({ ...formState, base: props.target.value });
-                  console.log(formState, props.target.value);
-                }}
-              />
-            </fieldset>
+            <form.Field name="base">
+              {(field) => (
+                <fieldset className="flex justify-right gap-2 flex-wrap">
+                  <label>Base</label>
+                  <Input
+                    type="number"
+                    pattern="\d+|\d+\.\d+"
+                    value={Number.isNaN(field.state.value) ? "" : field.state.value}
+                    onChange={(e) => field.handleChange(parseFloat(e.target.value))}
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </fieldset>
+              )}
+            </form.Field>
+            <form.Field name="height">
+              {(field) => (
+                <fieldset className="flex justify-right gap-2 flex-wrap">
+                  <label>Altura</label>
+                  <Input
+                    type="number"
+                    pattern="\d+|\d+\.\d+"
+                    value={Number.isNaN(field.state.value) ? "" : field.state.value}
+                    onChange={(e) => field.handleChange(parseFloat(e.target.value))}
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </fieldset>
+              )}
+            </form.Field>
+            <form.Field name="panels">
+              {(field) => (
+                <fieldset className="flex justify-right gap-2 flex-wrap">
+                  <label>Paneles</label>
+                  <Input
+                    type="number"
+                    pattern="\d"
+                    value={Number.isNaN(field.state.value) ? "" : field.state.value}
+                    onChange={(e) => field.handleChange(parseInt(e.target.value))}
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </fieldset>
+              )}
+            </form.Field>
           </form>
           <footer className="flex gap-2 justify-end">
-            <Dialog.Close asChild>
-              <Button variant="error">Cancelar</Button>
-            </Dialog.Close>
-            <Button
-              onClick={() => {
-                toast.success("Ventana Agregada.");
-              }}
-            >
-              Aceptar
+            <Button variant="error" onClick={() => form.reset()}>
+              Borrar
             </Button>
+            <Button onClick={() => form.handleSubmit()}>Guardar</Button>
           </footer>
         </Dialog.Content>
       </Dialog.Portal>

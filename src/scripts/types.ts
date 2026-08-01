@@ -31,9 +31,9 @@ export type TWindow = z.infer<typeof WINDOW_SCHEMA>;
 
 export interface IWindowInputs {
     type: TWindow["type"],
-    base: string | undefined,
-    height: string | undefined,
-    panels: string | undefined,
+    base: TWindow["base"],
+    height: TWindow["height"],
+    panels: TWindow["panels"],
 }
 
 export interface IBaseInput{
