@@ -38,11 +38,11 @@ export function WindowFormModal({
   const form = useForm({
     // NaN marks an empty numeric field, so the schema rejects it until it is filled.
     defaultValues: {
-      type: "classic",
+      type: undefined,
       base: Number.NaN,
       height: Number.NaN,
       panels: 2,
-    } as TWindow,
+    } as unknown as TWindow,
     validators: { onChange: WINDOW_SCHEMA },
     onSubmit: ({ value }) => {
       const measurements = calcWindow(value);
@@ -50,11 +50,18 @@ export function WindowFormModal({
         ...project,
         items: project.items ? [...project.items, measurements] : [measurements],
       });
+      toast.success("Ventana agregada.");
     },
     onSubmitInvalid: () => {
       toast.error("Revisa los datos de la ventana.");
     },
   });
+
+  const typeOptions = [
+    { value: undefined, label: "Seleciona un tipo" },
+    { value: "classic", label: "Clasica" },
+    { value: "p-65", label: "P-65" },
+  ];
 
   return (
     <Dialog.Root>
@@ -93,17 +100,13 @@ export function WindowFormModal({
                   <label>Tipo</label>
                   <Dropdown
                     asChild
-                    options={[
-                      { value: null, label: "Seleciona un tipo", checked: true },
-                      { value: "classic", label: "Clasica" },
-                      { value: "p-65", label: "P-65" },
-                    ]}
+                    options={typeOptions}
                     onChange={(option) => field.handleChange(option.value as TWindow["type"])}
                   >
                     <Button
-                      className="w-full flex items-center justify-between border-2 border-stone-800 dark:border-stone-400 text-stone-800 dark:text-stone-400"
+                      className="w-full flex items-center justify-between! border-2 border-stone-800 dark:border-stone-400 text-stone-800 dark:text-stone-400"
                     >
-                      <span>{field.state.value}</span>
+                      <span>{typeOptions.find((o) => o.value === field.state.value)?.label}</span>
                       <ChevronDown size={18} />
                     </Button>
                   </Dropdown>
