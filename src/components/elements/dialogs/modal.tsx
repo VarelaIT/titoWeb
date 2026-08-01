@@ -2,13 +2,14 @@ import { Dialog } from "radix-ui";
 import type { ReactNode } from "react";
 import { useForm } from "@tanstack/react-form";
 import { Input } from "../inputs";
-import { Button } from "../buttons";
+import { Button, TriggerButton } from "../buttons";
 import { toast } from "react-toastify";
 import type { TWindow } from "../../../scripts/types";
 import { WINDOW_SCHEMA } from "../../../scripts/zodSchemas";
 import { calcWindow } from "../../../scripts/utils";
 import { XIcon } from "lucide-react";
 import { useProject } from "../../providers/project.provider";
+import { Dropdown } from "../dropdown/dropdown";
 
 interface IWindowFormModalProps {
   triggerChild?: boolean;
@@ -86,6 +87,23 @@ export function WindowFormModal({
               form.handleSubmit();
             }}
           >
+            <form.Field name="type">
+              {(field) => (
+                <fieldset className="flex justify-right gap-2 flex-wrap">
+                  <label>Tipo</label>
+                  <Dropdown
+                    options={[
+                      { value: "classic", label: "Clasica" },
+                      { value: "p-65", label: "P-65" },
+                    ]}
+                    onChange={(option) => field.handleChange(option.value as TWindow["type"])}
+                  >
+                    <TriggerButton className={"w-full"}>{field.state.value}</TriggerButton>
+                  </Dropdown>
+                  <FieldError errors={field.state.meta.errors} />
+                </fieldset>
+              )}
+            </form.Field>
             <form.Field name="base">
               {(field) => (
                 <fieldset className="flex justify-right gap-2 flex-wrap">
