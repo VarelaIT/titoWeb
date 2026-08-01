@@ -2,12 +2,12 @@ import { Dialog } from "radix-ui";
 import type { ReactNode } from "react";
 import { useForm } from "@tanstack/react-form";
 import { Input } from "../inputs";
-import { Button, TriggerButton } from "../buttons";
+import { Button } from "../buttons";
 import { toast } from "react-toastify";
 import type { TWindow } from "../../../scripts/types";
 import { WINDOW_SCHEMA } from "../../../scripts/zodSchemas";
 import { calcWindow } from "../../../scripts/utils";
-import { XIcon } from "lucide-react";
+import { ChevronDown, XIcon } from "lucide-react";
 import { useProject } from "../../providers/project.provider";
 import { Dropdown } from "../dropdown/dropdown";
 
@@ -73,7 +73,7 @@ export function WindowFormModal({
             <Dialog.Title className="font-bold text-xl">
               Agregar Ventana
             </Dialog.Title>
-            <Dialog.Close>
+            <Dialog.Close asChild>
               <Button variant="transparent" className="px-1 py-1">
                 <XIcon className="text-red-600" size={18} />
               </Button>
@@ -92,13 +92,20 @@ export function WindowFormModal({
                 <fieldset className="flex justify-right gap-2 flex-wrap">
                   <label>Tipo</label>
                   <Dropdown
+                    asChild
                     options={[
+                      { value: null, label: "Seleciona un tipo", checked: true },
                       { value: "classic", label: "Clasica" },
                       { value: "p-65", label: "P-65" },
                     ]}
                     onChange={(option) => field.handleChange(option.value as TWindow["type"])}
                   >
-                    <TriggerButton className={"w-full"}>{field.state.value}</TriggerButton>
+                    <Button
+                      className="w-full flex items-center justify-between border-2 border-stone-800 dark:border-stone-400 text-stone-800 dark:text-stone-400"
+                    >
+                      <span>{field.state.value}</span>
+                      <ChevronDown size={18} />
+                    </Button>
                   </Dropdown>
                   <FieldError errors={field.state.meta.errors} />
                 </fieldset>

@@ -49,7 +49,11 @@ export function TriggerButton({variant, className, style, onClick, children, typ
     </span>
 }
 
-export function Button({variant, className, style, onClick, children, type, title}: IButtonProps){
+export interface IActionButtonProps extends React.ComponentProps<"button">{
+    variant?: TStyleVariant,
+}
+
+export function Button({variant, className, children, type, ...rest}: IActionButtonProps){
     const baseStyle  = getClassVariant(variant);
 
     function getClassVariant(variant?: TStyleVariant){
@@ -79,12 +83,10 @@ export function Button({variant, className, style, onClick, children, type, titl
     }
 
     return <button
+        {...rest}
         tabIndex={0}
         className={baseStyle + " " + className}
-        style={style}
-        onClick={onClick}
         type={type?? "button"}
-        title={title}
     >
         {children}
     </button>

@@ -7,12 +7,13 @@ interface IDropdownProps {
   onChange: (option: IOption) => void;
   children: React.ReactNode;
   asChild?: boolean;
+  className?: string;
 }
 
-export function Dropdown({ options, onChange, asChild, children }: IDropdownProps) {
+export function Dropdown({ options, onChange, asChild, className, children }: IDropdownProps) {
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild={asChild}>
+      <DropdownMenu.Trigger asChild={asChild} className={className}>
         {children}
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="bg-white shadow-md rounded-md p-2">
