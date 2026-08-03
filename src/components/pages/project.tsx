@@ -14,6 +14,7 @@ import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorag
 import { ChevronDown, Plus, Trash } from "lucide-react";
 import { WindowFormModal } from "../elements/dialogs/modal";
 import { set } from "zod/v3";
+import { toast } from "react-toastify";
 
 
 export default function ProjectPage({style}: {style: string}){
@@ -62,7 +63,8 @@ export default function ProjectPage({style}: {style: string}){
             className="text-gray-600 hover:text-red-500"
             onClick={() => {
               console.log(row)
-              setProject({ ...project, items: project.items?.filter((item) => item !== row.original) })
+              setProject({ ...project, items: project.items?.filter((item) => item !== row.original) });
+              toast.warn("Articulo eliminado");
             }}
           >
             <Trash size={16} />
