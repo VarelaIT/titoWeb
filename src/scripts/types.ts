@@ -22,50 +22,51 @@ export interface ITableStyles {
 }
 
 export interface IOption {
-    value: unknown;
-    label: string;
-    checked?: boolean;
+  value: unknown;
+  label: string;
+  checked?: boolean;
 }
 
 export type TWindow = z.infer<typeof WINDOW_SCHEMA>;
 
 export interface IWindowInputs {
-    type: TWindow["type"],
-    base: TWindow["base"],
-    height: TWindow["height"],
-    panels: TWindow["panels"],
+  type: TWindow["type"],
+  base: TWindow["base"],
+  height: TWindow["height"],
+  panels: TWindow["panels"],
 }
 
 export interface IBaseInput{
-    value: string | number | undefined,
-    required?: boolean,
-    placeHolder?: string,
-    inputMode?: "search" | "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal",
-    pattern?: string,
-    disable?: boolean,
-    type?: "text" | "number" | "float" | "date" | "datetime",
+  value: string | number | undefined,
+  required?: boolean,
+  placeHolder?: string,
+  inputMode?: "search" | "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal",
+  pattern?: string,
+  disable?: boolean,
+  type?: "text" | "number" | "float" | "date" | "datetime",
 }
 
 export interface ILayoutProps extends IElementProps{
-    children: ReactNode,
+  children?: ReactNode,
 }
 
 export interface IElementProps {
-    className?: string,
-    style?: React.CSSProperties,
+  className?: string,
+  style?: React.CSSProperties,
 }
 
 export type TStyleVariant = "primary" | "emerald" | "transparent" | "error";
 
 export enum EStorage{
-    THEME = "theme",
+  THEME = "theme",
 }
 
 export interface IProject {
-    title: string,
-    date: Date,
-    total: number,
-    items?: Array<WindowMeasurements>,
+  projectId: string;
+  title: string,
+  date: Date,
+  total: number,
+  items?: Array<WindowMeasurements>,
 }
 
 export interface IFrameDiff {

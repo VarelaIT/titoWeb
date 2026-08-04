@@ -10,7 +10,7 @@ export interface IProjectContext{
     setProject: (project: IProject) => void,
 }
 
-const ProjectContext = createContext<IProjectContext>({project: {title: "Sin Titulo", date: new Date(), total: 0}, setProject: (project: IProject)=> console.log("Project context initialized in " + project + " mode.")});
+const ProjectContext = createContext<IProjectContext>({project: {projectId: Date.now().toString(), title: "Sin Titulo", date: new Date(), total: 0}, setProject: (project: IProject)=> console.log("Project context initialized in " + project + " mode.")});
 
 export function ProjectProvider({children}: {children: ReactNode}){
   const [project, setProject] = useState<IProject>(loadProject());
@@ -18,8 +18,10 @@ export function ProjectProvider({children}: {children: ReactNode}){
   useEffect(() => {
     PRESETS_STORAGE.insert(
       STORAGE_CONSTANTS.PROJECTS,
-      project.title,
+      project.projectId,
       {
+        projectId: project.projectId,
+        title: project.title,
         date: project.date,
         total: project.total,
         items: !project.items ? []

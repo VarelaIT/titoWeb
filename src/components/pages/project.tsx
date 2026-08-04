@@ -13,7 +13,6 @@ import { Dropdown } from "../elements/dropdown/dropdown";
 import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
 import { ChevronDown, Plus, Trash } from "lucide-react";
 import { WindowFormModal } from "../elements/dialogs/modal";
-import { set } from "zod/v3";
 import { toast } from "react-toastify";
 
 

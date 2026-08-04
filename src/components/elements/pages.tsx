@@ -22,9 +22,9 @@ export function Page({variant, className, style, children}: IPageProps){
     }
 
     return <section
-        className={baseStyle + className}
+        className={baseStyle + " " + className}
         style={style}
     >
-        {children}
+        {children&& children}
     </section>
 }

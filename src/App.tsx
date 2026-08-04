@@ -5,6 +5,8 @@ import { Tabs, type Tab } from './components/layout/tab'
 import ProjectPage from './components/pages/project';
 import { WindowCalculator } from './components/pages/windowCalculator';
 import { ProjectProvider } from './components/providers/project.provider';
+import { Page } from './components/elements/pages';
+import Dashboard from './components/pages/dashboard';
 
 function App() {
 
@@ -43,8 +45,9 @@ function App() {
         }}
       >
         <AppHeader />
-        <div className='relative p-4 max-w-screen'>
-            <Tabs tabs={tabs}/>
+        <div className='relative p-4 max-w-screen grid gap-8'>
+          <Dashboard />
+          <Tabs tabs={tabs}/>
         </div>
       </main>
       <ToastContainer/>
