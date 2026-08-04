@@ -3,6 +3,7 @@ import { type ReactNode, useEffect, useState } from "react"
 import type { IProject } from "../../scripts/types"
 import { Button } from "../elements/buttons"
 import { Input } from "../elements/inputs"
+import { toast } from "react-toastify"
 
 interface IProjectFormProps {
     project: IProject,
@@ -66,6 +67,7 @@ export default function ProjectForm({project, setProject, triggerChild, children
                                         date: new Date(formState.date),
                                         total: Number.isNaN(total)? 0 : total,
                                     });
+                                    toast.success("Proyecto Guardado");
                                 }}
                             >Aceptar</Button>
                         </Dialog.Close>

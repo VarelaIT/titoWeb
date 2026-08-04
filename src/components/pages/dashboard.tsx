@@ -121,6 +121,7 @@ export default function Dashboard() {
   function deleteProject(projectId: string) {
     PRESETS_STORAGE.remove(STORAGE_CONSTANTS.PROJECTS, projectId);
     setProject(loadProject());
+    toast("Proyecto eliminado.");
   }
 
 return (
@@ -141,20 +142,20 @@ return (
           </header>
         </div>
         <div className="row-start-1 row-end-3 col-span-1">
-          <h2 className="text-2xl font-bold">Sidebar</h2>
+          {
+            //side bar
+          }
         </div>
         <div className="row-start-2 col-start-2">
           <article className="overflow-auto shadow-lg rounded-md border border-gray-300">
-            {project.items&&
               <Table
-                data={project.items}
+                data={project.items ?? []}
                 columns={columns}
                 styles={tableStyles}
               >
                 <TableHead/>
                 <TableBody/>
               </Table>
-            }
           </article>
         </div>
         <div className="row-start-1 row-end-3">
