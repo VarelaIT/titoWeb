@@ -8,8 +8,10 @@ import type { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import { WindowFormModal } from "../elements/dialogs/modal";
 import { Plus, Trash } from "lucide-react";
 import { toast } from "react-toastify";
-import type { ITableStyles } from "../../scripts/types";
+import { STORAGE_CONSTANTS, type ITableStyles } from "../../scripts/types";
 import ProjectSelector from "../blocks/projectSelector";
+import { loadProject } from "../../scripts/utils";
+import { PRESETS_STORAGE } from "../../scripts/presetStorage";
 
 export default function Dashboard() {
   const tableStyles: ITableStyles = {
@@ -116,15 +118,23 @@ export default function Dashboard() {
 
   const { project, setProject } = useProject();
 
+  function deleteProject(projectId: string) {
+    PRESETS_STORAGE.remove(STORAGE_CONSTANTS.PROJECTS, projectId);
+    setProject(loadProject());
+  }
+
 return (
       <Page className="grid grid-cols-[auto_2fr_auto] grid-rows-[auto_1fr] gap-4" >
         <div className="col-start-2 col-end-3">
           <header className="w-full">
             <div className="flex justify-between">
               <h2 className={"text-2xl font-bold"}>{project.title}</h2>
-              <ProjectForm project={project} setProject={setProject} triggerChild={true}>
-                <Button variant="primary">Editar</Button>
-              </ProjectForm>
+              <div className="flex gap-2">
+                <ProjectForm project={project} setProject={setProject} triggerChild={true}>
+                  <Button variant="primary">Editar</Button>
+                </ProjectForm>
+                <Button variant="error" onClick={() => deleteProject(project.projectId)}>Eliminar</Button>
+              </div>
             </div>
             <p>Dia: {project.date.toLocaleDateString()}</p>
             <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
@@ -148,7 +158,6 @@ return (
           </article>
         </div>
         <div className="row-start-1 row-end-3">
-          <h3>footer</h3>
           <ProjectSelector/>
         </div>
       </Page>

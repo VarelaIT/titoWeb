@@ -61,6 +61,7 @@ export default function ProjectForm({project, setProject, triggerChild, children
                                     const total= Number.parseFloat(formState.total)
                                     setProject({
                                         ...project,
+                                        projectId: project.projectId?? Date.now().toString(),
                                         title: formState.title,
                                         date: new Date(formState.date),
                                         total: Number.isNaN(total)? 0 : total,

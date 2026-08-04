@@ -1,3 +1,4 @@
+import { de } from "zod/v4/locales";
 import { PRESETS_STORAGE } from "./presetStorage";
 import { STORAGE_CONSTANTS, type IProject, type TWindow } from "./types";
 import { WindowMeasurements } from "./windowsMeasurement";
@@ -136,7 +137,8 @@ export function loadProject(key?: string): IProject {
     console.log("Should be the last stored project", storedProject);
     const details: IProject = storedProject.value as IProject;
     return {
-      title: storedProject.key,
+      projectId: details.projectId,
+      title: details.title,
       date: new Date(details.date),
       total: details.total,
       items: details.items?.map((item: TWindow) => new WindowMeasurements({ type: item.type, base: item.base, height: item.height, panels: item.panels })),

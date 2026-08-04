@@ -16,7 +16,7 @@ export class PRESETS_STORAGE {
         localStorage.setItem(storageName, JSON.stringify(storageObject));
     }
 
-    static find(storageName: string, key:string): any{
+    static find(storageName: string, key:string): unknown{
         const presetList = this.get(storageName);
         if(presetList)
             return presetList.find((preset)=> preset.key === key)?.value;
@@ -24,7 +24,7 @@ export class PRESETS_STORAGE {
             return undefined;
     }
 
-    static insert(storageName: string, key:string, value: any): boolean{
+    static insert(storageName: string, key:string, value: unknown): boolean{
         const preset: IStoragePreset = {
             key: key,
             value: value,
