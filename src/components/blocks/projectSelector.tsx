@@ -8,6 +8,27 @@ import { PlusIcon } from "lucide-react";
 import ProjectForm from "../forms/projectFrom";
 import { Page } from "../elements/pages";
 
+/**
+ * Percentage of a project's allotted time that has been consumed,
+ * from `startDate` (1%) to `endDate` (100%). Clamped to 1-100 so the
+ * progress bar always stays visible. Projects with no `endDate` are
+ * treated as fully consumed.
+ */
+function getTimeConsumed(startDate: Date, endDate?: Date): number {
+  if (!endDate) return 100;
+
+  const start = new Date(startDate).getTime();
+  const end = new Date(endDate).getTime();
+  const now = Date.now();
+
+  if (now >= end) return 100;
+
+  const duration = end - start;
+  if (duration <= 0) return 100;
+
+  return Math.min(100, Math.max(1, ((now - start) / duration) * 100));
+}
+
 export default function ProjectSelector(){
   const {project, setProject} = useProject();
 
@@ -48,8 +69,9 @@ export default function ProjectSelector(){
         </ProjectForm>
       </header>
       <ul>
-        {projects.map((proj: IProject, i: number) =>
-          <li key={"project" + i}
+        {projects.map((proj: IProject, i: number) => {
+          const progress = getTimeConsumed(proj.startDate, proj.endDate);
+          return <li key={"project" + i}
             className={
               "dark:hover:bg-stone-600 hover:bg-stone-200 p-2 cursor-pointer rounded-md shadow-sm mb-2 "
               + (proj.projectId === project.projectId ? " dark:bg-stone-600 bg-stone-300" : "dark:bg-stone-400 bg-stone-100")
@@ -59,8 +81,19 @@ export default function ProjectSelector(){
             <p className="text-md font-semibold text-gray-600 dark:text-gray-100">{proj.title} <span className="text-sm">({proj.items?.length ?? 0} Articulos)</span></p>
             <p>Entrega: {proj.endDate ? new Date(proj.endDate).toLocaleDateString() : "N/A"}</p>
             <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(proj.total)}</p>
+            <div className="h-1 bg-gray-400 rounded-md">
+              <div
+                className={
+                  "h-full rounded-md "
+                  + (progress < 50 ? " bg-green-600" : "")
+                  + (progress >= 50 && progress < 75 ? " bg-yellow-600" : "")
+                  + (progress >= 75 ? " bg-red-600" : "")
+                }
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
           </li>
-        )}
+        })}
       </ul>
     </Page>
   );
