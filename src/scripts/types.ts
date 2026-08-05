@@ -64,9 +64,19 @@ export enum EStorage{
 export interface IProject {
   projectId: string;
   title: string,
-  date: Date,
+  startDate: Date,
+  endDate?: Date,
   total: number,
   items?: Array<WindowMeasurements>,
+}
+
+export interface IStoredProject {
+  projectId: string;
+  title: string;
+  startDate: string;
+  endDate?: string;
+  total: number;
+  items?: TWindow[];
 }
 
 export interface IFrameDiff {

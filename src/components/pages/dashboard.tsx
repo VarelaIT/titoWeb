@@ -149,7 +149,7 @@ return (
                 </PromptModal>
               </div>
             </div>
-            <p>Dia: {project.date.toLocaleDateString()}</p>
+            <p>Entrega: {project.endDate?.toLocaleDateString()}</p>
             <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
           </header>
         </div>

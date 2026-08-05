@@ -134,13 +134,13 @@ export default function ProjectPage({style}: {style: string}){
               <Button variant="primary">Editar</Button>
             </ProjectForm>
             <ProjectSelector />
-            <ProjectForm project={{ title: "", date: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
+            <ProjectForm project={{ projectId: Date.now().toString(), title: "", startDate: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
               <Button variant="emerald">Crear</Button>
             </ProjectForm>
           </div>
         </header>
         <article>
-          <p>Dia: {project.date.toLocaleDateString()}</p>
+          <p>Dia: {project.endDate?.toLocaleDateString()}</p>
           <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
         </article>
         <article className="overflow-auto shadow-lg rounded-md border border-gray-300 mt-4">
@@ -214,10 +214,10 @@ interface IProjectFormProps {
 }
 
 function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
-    const [formState, setFormState] = useState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+    const [formState, setFormState] = useState({ projectId: Date.now().toString(), title: project.title, startDate: project.startDate.toISOString(), endDate: project.endDate? project.endDate.toISOString() : "", total: project.total.toString()})
 
     useEffect(() => {
-        setFormState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+        setFormState({ projectId: Date.now().toString(), title: project.title, startDate: project.startDate.toISOString(), endDate: project.endDate? project.endDate.toISOString() : "", total: project.total.toString()})
     }, [project])
 
     return (
@@ -264,7 +264,7 @@ function ProjectForm({project, setProject, triggerChild, children}: IProjectForm
                                     setProject({
                                         ...project,
                                         title: formState.title,
-                                        date: new Date(formState.date),
+                                        endDate: formState.endDate ? new Date(formState.endDate) : undefined  ,
                                         total: Number.isNaN(total)? 0 : total,
                                     });
                                 }}

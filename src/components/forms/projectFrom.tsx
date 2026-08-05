@@ -13,10 +13,10 @@ interface IProjectFormProps {
 }
 
 export default function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
-    const [formState, setFormState] = useState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+  const [formState, setFormState] = useState({ title: project.title, startDate: project.startDate.toISOString(), endDate: project.endDate? project.endDate.toISOString() : "", total: project.total.toString() });
 
     useEffect(() => {
-        setFormState({title: project.title, date: project.date.toISOString(), total: project.total.toString()})
+        setFormState({title: project.title, startDate: project.startDate.toISOString(), endDate: project.endDate? project.endDate.toISOString() : "", total: project.total.toString()})
     }, [project])
 
     return (
@@ -39,9 +39,9 @@ export default function ProjectForm({project, setProject, triggerChild, children
                         />
                         <Input
                             type={"datetime"}
-                            value={formState.date}
+                            value={formState.endDate}
                             onChange={(props)=> {
-                                setFormState({...formState, date: props.target.value})
+                                setFormState({...formState, endDate: props.target.value})
                             }}
                         />
                         <Input
@@ -64,7 +64,7 @@ export default function ProjectForm({project, setProject, triggerChild, children
                                         ...project,
                                         projectId: project.projectId?? Date.now().toString(),
                                         title: formState.title,
-                                        date: new Date(formState.date),
+                                        endDate: formState.endDate? new Date(formState.endDate) : undefined,
                                         total: Number.isNaN(total)? 0 : total,
                                     });
                                     toast.success("Proyecto Guardado");

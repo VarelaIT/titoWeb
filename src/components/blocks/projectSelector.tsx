@@ -16,16 +16,19 @@ export default function ProjectSelector(){
   }, [project]);
 
   function loadProject(): IProject[] {
-    const projects = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS);
-    console.log("project list", projects)
+    const projects:IStoragePreset[] | undefined = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS) as IStoragePreset[] | undefined;
     if (projects) {
-      return projects.map((p: IStoragePreset) => ({
-            projectId: p.value.projectId,
-            title: p.value.title,
-            date: new Date(p.value.date),
-            total: p.value.total,
-            items: p.value.items?.map((item: TWindow) => new WindowMeasurements({ type: item.type, base: item.base, height: item.height, panels: item.panels })),
-          }));
+      return projects.map((p: IStoragePreset) => {
+        const { projectId, title, startDate, endDate, total, items } = p.value as IProject;
+        return {
+          projectId: projectId,
+          title: title,
+          startDate: new Date(startDate),
+          endDate: endDate ? new Date(endDate) : undefined,
+          total: total,
+          items: items?.map((item: TWindow) => new WindowMeasurements({ type: item.type, base: item.base, height: item.height, panels: item.panels })),
+        }
+      });
     }
     return [];
   }
@@ -34,7 +37,7 @@ export default function ProjectSelector(){
     <Page className="bg-stone-100">
       <header className="flex justify-between items-center p-2">
         <h2 className="text-xl font-bold">Listado de Proyectos</h2>
-        <ProjectForm project={{projectId: Date.now().toString(), title: "", date: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
+        <ProjectForm project={{projectId: Date.now().toString(), title: "", startDate: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
           <Button
             variant="transparent"
             className="text-blue-600"
@@ -54,7 +57,7 @@ export default function ProjectSelector(){
             onClick={() => setProject(proj)}
           >
             <p className="text-md font-semibold text-gray-600 dark:text-gray-100">{proj.title} <span className="text-sm">({proj.items?.length ?? 0} Articulos)</span></p>
-            <p>Fecha: {new Date(proj.date).toLocaleDateString()}</p>
+            <p>Entrega: {proj.endDate ? new Date(proj.endDate).toLocaleDateString() : "N/A"}</p>
             <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(proj.total)}</p>
           </li>
         )}

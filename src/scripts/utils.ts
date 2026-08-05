@@ -1,6 +1,5 @@
-import { de } from "zod/v4/locales";
 import { PRESETS_STORAGE } from "./presetStorage";
-import { STORAGE_CONSTANTS, type IProject, type TWindow } from "./types";
+import { STORAGE_CONSTANTS, type IProject, type IStoredProject, type TWindow } from "./types";
 import { WindowMeasurements } from "./windowsMeasurement";
 import Papa, { type UnparseObject } from 'papaparse';
 
@@ -132,17 +131,19 @@ export function printWindow(wm: WindowMeasurements, modern: boolean){
 }
 
 export function loadProject(key?: string): IProject {
-  const storedProject = key? PRESETS_STORAGE.find(STORAGE_CONSTANTS.PROJECTS, key) : PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS)?.pop();
-  if (storedProject) {
-    console.log("Should be the last stored project", storedProject);
-    const details: IProject = storedProject.value as IProject;
+  const stored = (key
+    ? PRESETS_STORAGE.find(STORAGE_CONSTANTS.PROJECTS, key)
+    : PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS)?.pop()?.value) as IStoredProject | undefined;
+
+  if (stored) {
     return {
-      projectId: details.projectId,
-      title: details.title,
-      date: new Date(details.date),
-      total: details.total,
-      items: details.items?.map((item: TWindow) => new WindowMeasurements({ type: item.type, base: item.base, height: item.height, panels: item.panels })),
+      projectId: stored.projectId,
+      title: stored.title,
+      startDate: new Date(stored.startDate),
+      endDate: stored.endDate ? new Date(stored.endDate) : undefined,
+      total: stored.total,
+      items: stored.items?.map((item: TWindow) => new WindowMeasurements(item)),
     };
   }
-  return { title: "Sin Titulo", date: new Date(), total: 0, items: []};
+  return { projectId: Date.now().toString(), title: "Sin Titulo", startDate: new Date(), total: 0, items: []};
 }
