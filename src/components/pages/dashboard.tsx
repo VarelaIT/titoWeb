@@ -12,6 +12,7 @@ import { STORAGE_CONSTANTS, type ITableStyles } from "../../scripts/types";
 import ProjectSelector from "../blocks/projectSelector";
 import { loadProject } from "../../scripts/utils";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
+import PromptModal from "../elements/dialogs/prompt";
 
 export default function Dashboard() {
   const tableStyles: ITableStyles = {
@@ -134,7 +135,18 @@ return (
                 <ProjectForm project={project} setProject={setProject} triggerChild={true}>
                   <Button variant="primary">Editar</Button>
                 </ProjectForm>
-                <Button variant="error" onClick={() => deleteProject(project.projectId)}>Eliminar</Button>
+                <PromptModal
+                  content={{
+                    title: "Eliminar " + project.title,
+                    message: "¿Estás seguro de que deseas eliminar este proyecto?"
+                  }}
+                  variant="error"
+                  asChild
+                  onCancel={() => { }}
+                  onAccept={() => deleteProject(project.projectId)}
+                >
+                  <Button variant="error">Eliminar</Button>
+                </PromptModal>
               </div>
             </div>
             <p>Dia: {project.date.toLocaleDateString()}</p>
