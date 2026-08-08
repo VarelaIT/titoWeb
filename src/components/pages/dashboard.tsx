@@ -13,6 +13,7 @@ import ProjectSelector from "../blocks/projectSelector";
 import { loadProject } from "../../scripts/utils";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
 import PromptModal from "../elements/dialogs/prompt";
+import { usePrompt } from "../providers/prompt.provider";
 
 export default function Dashboard() {
   const tableStyles: ITableStyles = {
@@ -56,9 +57,18 @@ export default function Dashboard() {
           variant="transparent"
           className="text-gray-600 hover:text-red-500"
           onClick={() => {
-            console.log(row)
-            setProject({ ...project, items: project.items?.filter((item) => item !== row.original) });
-            toast.warn("Articulo eliminado");
+            setPrompt({
+              content: {
+                title: `Eliminar Articulo ${row.original.type} ${row.original.base} x ${row.original.height}`,
+                message: "¿Estás seguro de que deseas eliminar este articulo?"
+              },
+              variant: "error",
+              onCancel: () => { },
+              onAccept: () => {
+                setProject({ ...project, items: project.items?.filter((item) => item !== row.original) });
+                toast.warn("Articulo eliminado");
+              }
+            })
           }}
         >
           <Trash size={16} />
@@ -118,6 +128,7 @@ export default function Dashboard() {
   ];
 
   const { project, setProject } = useProject();
+  const { setPrompt } = usePrompt();
 
   function deleteProject(projectId: string) {
     PRESETS_STORAGE.remove(STORAGE_CONSTANTS.PROJECTS, projectId);
@@ -135,18 +146,19 @@ return (
                 <ProjectForm project={project} setProject={setProject} triggerChild={true}>
                   <Button variant="primary">Editar</Button>
                 </ProjectForm>
-                <PromptModal
-                  content={{
+            <Button variant="error"
+              onClick={() => {
+                setPrompt({
+                  content: {
                     title: "Eliminar " + project.title,
                     message: "¿Estás seguro de que deseas eliminar este proyecto?"
-                  }}
-                  variant="error"
-                  asChild
-                  onCancel={() => { }}
-                  onAccept={() => deleteProject(project.projectId)}
-                >
-                  <Button variant="error">Eliminar</Button>
-                </PromptModal>
+                  },
+                  variant: "error",
+                  onCancel: () => { },
+                  onAccept: () => deleteProject(project.projectId)
+                });
+              }}
+            >Eliminar</Button>
               </div>
             </div>
             <p>Entrega: {project.endDate?.toLocaleDateString()}</p>

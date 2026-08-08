@@ -1,32 +1,54 @@
 import { Dialog } from "radix-ui";
 import { Button } from "../buttons";
 import { X } from "lucide-react";
+import { usePrompt } from "../../providers/prompt.provider";
+import { useMemo, useState } from "react";
+import type { IPromptProps } from "../../../scripts/utils";
 
-interface IPromptModalProps {
-  content: { title: string; message: string};
-  children: React.ReactNode;
-  asChild?: boolean;
-  variant?: string;
-  onAccept?: () => void;
-  onCancel?: () => void;
-}
+export default function PromptModal() {
+  const [open, setOpen] = useState(false);
+  const { prompt } = usePrompt();
 
-export default function PromptModal({ content, children, asChild, variant, onAccept, onCancel }: IPromptModalProps) {
+  const { content, onAccept, onCancel } = useMemo<IPromptProps>(() => {
+    if (!prompt) return { content: { title: "", message: "" }, onAccept: () => {}, onCancel: () => {} };
+    setOpen(true);
+    return prompt;
+  }, [prompt]);
+
+  const { headerStyle, bodyStyle } = useMemo<{ headerStyle: string; bodyStyle: string }>(() => {
+    switch (prompt?.variant) {
+      case "error":
+        return {
+          headerStyle: "text-red-500",
+          bodyStyle: "bg-red-50",
+        };
+      case "warning":
+        return {
+          headerStyle: "text-yellow-500",
+          bodyStyle: "bg-yellow-50",
+        };
+      default:
+        return {
+          headerStyle: "",
+          bodyStyle: "bg-white",
+        };
+    };
+  }, [prompt]);
+
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild={asChild}>{children}</Dialog.Trigger>
+    <Dialog.Root open={open} onOpenChange={setOpen} >
       <Dialog.Portal>
         <Dialog.Overlay
         className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}
         />
         <Dialog.Content
           className={
-            "absolute bg-white p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2 "
-            + "grid gap-4"
+            "absolute p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2 grid gap-4 "
+            + bodyStyle
           }
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <header className="flex justify-between items-center">
+          <header className={"flex justify-between items-center " + headerStyle}>
             <Dialog.Title className="font-bold text-xl">{content.title}</Dialog.Title>
             <Dialog.Close>
               <Button variant="transparent">

@@ -147,3 +147,10 @@ export function loadProject(key?: string): IProject {
   }
   return { projectId: Date.now().toString(), title: "Sin Titulo", startDate: new Date(), total: 0, items: []};
 }
+
+export interface IPromptProps{
+  content: { title: string; message: string};
+  variant?: string;
+  onAccept?: () => void;
+  onCancel?: () => void;
+}

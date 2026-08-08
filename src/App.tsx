@@ -4,9 +4,8 @@ import { AppHeader } from './components/layout/header'
 import { Tabs, type Tab } from './components/layout/tab'
 import ProjectPage from './components/pages/project';
 import { WindowCalculator } from './components/pages/windowCalculator';
-import { ProjectProvider } from './components/providers/project.provider';
-import { Page } from './components/elements/pages';
 import Dashboard from './components/pages/dashboard';
+import Providers from './components/providers';
 
 function App() {
 
@@ -32,7 +31,7 @@ function App() {
   ];
 
   return (
-    <ProjectProvider>
+    <Providers>
       <main
         className={
           "h-screen w-screen bg-stone-100 "
@@ -51,7 +50,7 @@ function App() {
         </div>
       </main>
       <ToastContainer/>
-    </ProjectProvider>
+    </Providers>
   )
 }
 
