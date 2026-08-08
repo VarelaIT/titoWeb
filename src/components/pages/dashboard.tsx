@@ -161,7 +161,7 @@ return (
             >Eliminar</Button>
               </div>
             </div>
-            <p>Entrega: {project.endDate?.toLocaleDateString()}</p>
+            <p>Entrega: {project.endDate?.toLocaleDateString("es-ES")}</p>
             <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
           </header>
         </div>

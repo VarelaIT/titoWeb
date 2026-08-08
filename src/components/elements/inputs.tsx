@@ -1,5 +1,7 @@
 import type { ChangeEventHandler } from "react";
 import type { IBaseInput } from "../../scripts/types";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export interface IInputProps extends IBaseInput{
     className?: string,
@@ -19,13 +21,13 @@ export function Input(props: IInputProps) {
     }
 
     return (
-        <input 
+        <input
             type="text"
             className={baseStyle + props.className}
-            inputMode={props.inputMode} 
-            placeholder={props.placeHolder} 
-            required={props.required} 
-            pattern={props.pattern} 
+            inputMode={props.inputMode}
+            placeholder={props.placeHolder}
+            required={props.required}
+            pattern={props.pattern}
             disabled={props.disable}
             value={props.value}
             onChange={props.onChange}
@@ -36,15 +38,26 @@ export function Input(props: IInputProps) {
 export function CheckBox(props: IInputProps) {
 
     return (
-        <input 
+        <input
             type="checkbox"
-            inputMode={props.inputMode} 
-            placeholder={props.placeHolder} 
-            required={props.required} 
-            pattern={props.pattern} 
+            inputMode={props.inputMode}
+            placeholder={props.placeHolder}
+            required={props.required}
+            pattern={props.pattern}
             disabled={props.disable}
             value={props.value}
             onChange={props.onChange}
         />
     );
+}
+
+export function DateInput(props: IInputProps) {
+
+  return (
+    <DatePicker
+    dateFormat={"dd/MM/yyyy"}
+      selected={props.value? new Date(props.value) : null}
+      onChange={(date: Date | null) => props.onChange({ target: { value: date?.toLocaleDateString() } } as React.ChangeEvent<HTMLInputElement>)}
+    />
+  );
 }
