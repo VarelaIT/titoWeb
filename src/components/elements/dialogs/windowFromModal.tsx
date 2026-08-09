@@ -10,24 +10,11 @@ import { ChevronDown, XIcon } from "lucide-react";
 import { useProject } from "../../providers/project.provider";
 import { Dropdown } from "../dropdown/dropdown";
 import { useEffect } from "react";
+import { FieldError } from "../../forms/fieldError";
 
 interface IWindowFormModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-}
-
-function FieldError({ errors }: { errors: unknown[] }) {
-  const message = errors
-    .map((error) =>
-      typeof error === "string"
-        ? error
-        : (error as { message?: string } | undefined)?.message,
-    )
-    .find(Boolean);
-
-  if (!message) return null;
-
-  return <p className="w-full text-sm text-red-600">{message}</p>;
 }
 
 export function WindowFormModal({ open, setOpen }: IWindowFormModalProps) {

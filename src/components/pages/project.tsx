@@ -12,7 +12,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Dropdown } from "../elements/dropdown/dropdown";
 import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
 import { ChevronDown, Plus, Trash } from "lucide-react";
-import { WindowFormModal } from "../elements/dialogs/modal";
+import { WindowFormModal } from "../elements/dialogs/windowFromModal";
 import { toast } from "react-toastify";
 
 

@@ -51,13 +51,13 @@ export function CheckBox(props: IInputProps) {
     );
 }
 
-export function DateInput(props: IInputProps) {
+export function DateInput({ value, onChange }: { value: Date | undefined, onChange: (date: Date | undefined) => void }) {
 
   return (
     <DatePicker
     dateFormat={"dd/MM/yyyy"}
-      selected={props.value? new Date(props.value) : null}
-      onChange={(date: Date | null) => props.onChange({ target: { value: date?.toLocaleDateString() } } as React.ChangeEvent<HTMLInputElement>)}
+      selected={value}
+      onChange={(date: Date | null) => onChange(date ?? undefined)}
     />
   );
 }
