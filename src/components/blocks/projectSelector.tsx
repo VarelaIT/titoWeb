@@ -80,7 +80,7 @@ export default function ProjectSelector(){
           >
             <p className="text-md font-semibold text-gray-600 dark:text-gray-100">{proj.title} <span className="text-sm">({proj.items?.length ?? 0} Articulos)</span></p>
             <p>Entrega: {proj.endDate ? new Date(proj.endDate).toLocaleDateString("es-ES") : "N/A"}</p>
-            <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(proj.total)}</p>
+            <p>Monto: RD{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(proj.total)}</p>
             <div className="h-1 bg-gray-400 rounded-md">
               <div
                 className={

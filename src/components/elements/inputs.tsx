@@ -55,7 +55,8 @@ export function DateInput({ value, onChange }: { value: Date | undefined, onChan
 
   return (
     <DatePicker
-    dateFormat={"dd/MM/yyyy"}
+      className="border-2 p-2 rounded-md"
+      dateFormat={"dd/MM/yyyy"}
       selected={value}
       onChange={(date: Date | null) => onChange(date ?? undefined)}
     />

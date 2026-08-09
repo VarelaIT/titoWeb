@@ -162,7 +162,7 @@ return (
               </div>
             </div>
             <p>Entrega: {project.endDate?.toLocaleDateString("es-ES")}</p>
-            <p>Monto: RD{new Intl.NumberFormat("en-IN", { style: "currency", currency: "USD" }).format(project.total)}</p>
+            <p>Monto: RD{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(project.total)}</p>
           </header>
         </div>
         <div className="row-start-1 row-end-3 col-span-1">
