@@ -1,5 +1,4 @@
 import { Dialog } from "radix-ui";
-import type { ReactNode } from "react";
 import { useForm } from "@tanstack/react-form";
 import { Input } from "../inputs";
 import { Button } from "../buttons";
@@ -10,10 +9,11 @@ import { calcWindow } from "../../../scripts/utils";
 import { ChevronDown, XIcon } from "lucide-react";
 import { useProject } from "../../providers/project.provider";
 import { Dropdown } from "../dropdown/dropdown";
+import { useEffect } from "react";
 
 interface IWindowFormModalProps {
-  asChild?: boolean;
-  children: ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 function FieldError({ errors }: { errors: unknown[] }) {
@@ -30,10 +30,7 @@ function FieldError({ errors }: { errors: unknown[] }) {
   return <p className="w-full text-sm text-red-600">{message}</p>;
 }
 
-export function WindowFormModal({
-  asChild,
-  children,
-}: IWindowFormModalProps) {
+export function WindowFormModal({ open, setOpen }: IWindowFormModalProps) {
   const { project, setProject } = useProject();
   const form = useForm({
     // NaN marks an empty numeric field, so the schema rejects it until it is filled.
@@ -63,9 +60,12 @@ export function WindowFormModal({
     { value: "p-65", label: "P-65" },
   ];
 
+  useEffect(()=> {
+    if (!open) form.reset();
+  }, [open]);
+
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild={asChild}>{children}</Dialog.Trigger>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
         <Dialog.Overlay
           className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}
@@ -96,15 +96,16 @@ export function WindowFormModal({
           >
             <form.Field name="type">
               {(field) => (
-                <fieldset className="flex justify-right gap-2 flex-wrap">
-                  <label>Tipo</label>
+                <fieldset className="relative flex justify-right gap-2 flex-wrap">
+                  <legend>Tipo</legend>
                   <Dropdown
                     asChild
                     options={typeOptions}
                     onChange={(option) => field.handleChange(option.value as TWindow["type"])}
                   >
                     <Button
-                      className="w-full flex items-center justify-between! border-2 border-stone-800 dark:border-stone-400 text-stone-800 dark:text-stone-400"
+                      variant={field.state.value === "classic" ? "cyan" : field.state.value === "p-65" ? "success" : undefined}
+                      className={"w-full flex items-center justify-between! border-2 border-stone-800 dark:border-stone-400 text-stone-800 dark:text-stone-400 "}
                     >
                       <span>{typeOptions.find((o) => o.value === field.state.value)?.label}</span>
                       <ChevronDown size={18} />
@@ -117,7 +118,7 @@ export function WindowFormModal({
             <form.Field name="base">
               {(field) => (
                 <fieldset className="flex justify-right gap-2 flex-wrap">
-                  <label>Base</label>
+                  <legend>Base</legend>
                   <Input
                     type="number"
                     pattern="\d+|\d+\.\d+"
@@ -131,7 +132,7 @@ export function WindowFormModal({
             <form.Field name="height">
               {(field) => (
                 <fieldset className="flex justify-right gap-2 flex-wrap">
-                  <label>Altura</label>
+                  <legend>Altura</legend>
                   <Input
                     type="number"
                     pattern="\d+|\d+\.\d+"
@@ -142,10 +143,12 @@ export function WindowFormModal({
                 </fieldset>
               )}
             </form.Field>
+            {/**
+              Un-used field
             <form.Field name="panels">
               {(field) => (
                 <fieldset className="flex justify-right gap-2 flex-wrap">
-                  <label>Paneles</label>
+                  <legend>Paneles</legend>
                   <Input
                     type="number"
                     pattern="\d"
@@ -156,6 +159,7 @@ export function WindowFormModal({
                 </fieldset>
               )}
             </form.Field>
+            */}
           </form>
           <footer className="flex gap-2 justify-end">
             <Button variant="error" onClick={() => form.reset()}>

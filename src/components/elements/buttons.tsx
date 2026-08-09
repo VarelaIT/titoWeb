@@ -8,7 +8,7 @@ export interface IButtonProps extends ILayoutProps{
     title?: string,
 }
 
-export function TriggerButton({variant, className, style, onClick, children, type, title}: IButtonProps){
+export function TriggerButton({variant, className, style, onClick, children, title}: IButtonProps){
     const baseStyle  = getClassVariant(variant);
 
     function getClassVariant(variant?: TStyleVariant){
@@ -42,7 +42,6 @@ export function TriggerButton({variant, className, style, onClick, children, typ
         className={baseStyle + " " + className}
         style={style}
         onClick={onClick}
-        type={type?? "button"}
         title={title}
     >
         {children}
@@ -60,23 +59,35 @@ export function Button({variant, className, children, type, ...rest}: IActionBut
         let result = "p-2 rounded-md flex justify-center cursor-pointer ";
 
         switch(variant){
-            case "error":
-                result += "bg-red-600 text-white dark:bg-red-800 dark:text-gray-200 hover:bg-red-700 dark:hover:bg-red-900 "
-                    + " hover:shadow-md dark:hover:shadow-md dark:shadow-red-500/50"
-                    break;
-            case "emerald":
-                result += "bg-emerald-600 text-white dark:bg-emerald-800 dark:text-gray-200 hover:bg-emerald-700 dark:hover:bg-emerald-900 "
-                    + " hover:shadow-md dark:hover:shadow-md dark:shadow-emerald-500/50"
-                    break;
-            case "transparent":
-                result += "hover:bg-stone-200 dark:hover:bg-slate-900 "
-                    + " hover:shadow-md dark:hover:shadow-md dark:shadow-blue-500/50"
-                    break;
-            default:
-                result += "bg-slate-600 text-white dark:bg-slate-900 dark:text-gray-200 "
-                    + "hover:bg-slate-800 dark:hover:bg-slate-950 "
-                    + "shadow-md dark:shadow-white/50"
-                    break;
+          case "error":
+          result += "bg-red-600 text-white dark:bg-red-800 dark:text-gray-200 hover:bg-red-700 dark:hover:bg-red-900 "
+          + " hover:shadow-md dark:hover:shadow-md dark:shadow-red-500/50"
+          break;
+          case "warning":
+          result += "bg-orange-600 text-white dark:bg-orange-800 dark:text-gray-200 hover:bg-orange-700 dark:hover:bg-orange-900 "
+          + " hover:shadow-md dark:hover:shadow-md dark:shadow-orange-500/50"
+          break;
+          case "success":
+          result += "bg-green-600 text-white dark:bg-green-800 dark:text-gray-200 hover:bg-green-700 dark:hover:bg-green-900 "
+          + " hover:shadow-md dark:hover:shadow-md dark:shadow-green-500/50"
+          break;
+          case "emerald":
+          result += "bg-emerald-600 text-white dark:bg-emerald-800 dark:text-gray-200 hover:bg-emerald-700 dark:hover:bg-emerald-900 "
+          + " hover:shadow-md dark:hover:shadow-md dark:shadow-emerald-500/50"
+          break;
+          case "cyan":
+          result += "bg-cyan-600 text-white dark:bg-cyan-800 dark:text-gray-200 hover:bg-cyan-700 dark:hover:bg-cyan-900 "
+          + " hover:shadow-md dark:hover:shadow-md dark:shadow-cyan-500/50"
+          break;
+          case "transparent":
+          result += "hover:bg-stone-200 dark:hover:bg-slate-900 "
+          + " hover:shadow-md dark:hover:shadow-md dark:shadow-blue-500/50"
+          break;
+          default:
+          result += "bg-slate-600 text-white dark:bg-slate-900 dark:text-gray-200 "
+          + "hover:bg-slate-800 dark:hover:bg-slate-950 "
+          + "shadow-md dark:shadow-white/50"
+          break;
         }
 
         return result;

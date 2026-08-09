@@ -1,19 +1,19 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import { Button, TriggerButton } from "../elements/buttons";
+import { Button } from "../elements/buttons";
 import { Page } from "../elements/pages";
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import ProjectForm from "../forms/projectFrom";
 import { useProject } from "../providers/project.provider";
 import type { WindowMeasurements } from "../../scripts/windowsMeasurement";
-import { WindowFormModal } from "../elements/dialogs/modal";
+import { WindowFormModal } from "../elements/dialogs/windowFromModal";
 import { Plus, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import { STORAGE_CONSTANTS, type ITableStyles } from "../../scripts/types";
 import ProjectSelector from "../blocks/projectSelector";
 import { loadProject } from "../../scripts/utils";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
-import PromptModal from "../elements/dialogs/prompt";
 import { usePrompt } from "../providers/prompt.provider";
+import { useState } from "react";
 
 export default function Dashboard() {
   const tableStyles: ITableStyles = {
@@ -33,6 +33,7 @@ export default function Dashboard() {
       cell: "",
     }
   };
+  const [openWindowForm, setOpenWindowForm] = useState(false);
   const defaultColumnConf = {
     enableColumnFilter: true,
     enableGrouping: true,
@@ -41,15 +42,14 @@ export default function Dashboard() {
     {
       ...defaultColumnConf,
       id: "Acciones",
-      header: () => <WindowFormModal asChild >
-        <TriggerButton
+      header: () =>
+        <Button
           title="Agregar"
           variant="transparent"
-          onClick={() => console.log()}
+          onClick={() => setOpenWindowForm(true)}
         >
           <Plus size={16} className="text-blue-600" />
-        </TriggerButton>
-      </WindowFormModal>,
+        </Button>,
       pinned: "left",
       cell: ({ row }) => <div className="sticky left-0">
         <Button
@@ -172,14 +172,15 @@ return (
         </div>
         <div className="row-start-2 col-start-2">
           <article className="overflow-auto shadow-lg rounded-md border border-gray-300">
-              <Table
-                data={project.items ?? []}
-                columns={columns}
-                styles={tableStyles}
-              >
-                <TableHead/>
-                <TableBody/>
-              </Table>
+            <Table
+              data={project.items ?? []}
+              columns={columns as ColumnDef<unknown>[]}
+              styles={tableStyles}
+            >
+              <TableHead/>
+              <TableBody/>
+            </Table>
+            <WindowFormModal open={openWindowForm} setOpen={setOpenWindowForm}/>,
           </article>
         </div>
         <div className="row-start-1 row-end-3">
