@@ -33,6 +33,7 @@ export default function ProjectForm({project, setProject, triggerChild, children
         endDate: value.endDate,
         total: value.total
       });
+      form.reset();
       toast.success("Projecto Guardado");
       setOpen(false);
     },
@@ -107,7 +108,11 @@ export default function ProjectForm({project, setProject, triggerChild, children
           </form>
           <footer className="flex gap-2 justify-end">
             <Dialog.Close asChild>
-              <Button variant="error">Cancelar</Button>
+              <Button variant="error"
+                onClick={()=> {
+                  form.reset();
+                }}
+              >Cancelar</Button>
             </Dialog.Close>
             <Button
               onClick={()=> {

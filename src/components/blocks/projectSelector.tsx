@@ -55,7 +55,7 @@ export default function ProjectSelector(){
   }
 
   return (
-    <Page className="bg-stone-100">
+    <Page className="bg-white">
       <header className="flex justify-between items-center p-2">
         <h2 className="text-xl font-bold">Listado de Proyectos</h2>
         <ProjectForm project={{projectId: Date.now().toString(), title: "", startDate: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
@@ -68,7 +68,7 @@ export default function ProjectSelector(){
           </Button>
         </ProjectForm>
       </header>
-      <ul>
+      <ul className="max-h-[80vh] overflow-auto">
         {projects.map((proj: IProject, i: number) => {
           const progress = getTimeConsumed(proj.startDate, proj.endDate);
           return <li key={"project" + i}

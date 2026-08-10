@@ -46,7 +46,6 @@ function App() {
         <AppHeader />
         <div className='relative p-4 max-w-screen grid gap-8'>
           <Dashboard />
-          <Tabs tabs={tabs}/>
         </div>
       </main>
       <ToastContainer/>

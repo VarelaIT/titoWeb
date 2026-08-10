@@ -23,7 +23,7 @@ export default function Dashboard() {
       cell: "font-medium p-2 m-0 border-r border-gray-200 truncate",
     },
     body: {
-      container: "",
+      container: "bg-white",
       row: "border-b border-gray-200 hover:bg-gray-300 even:bg-gray-100",
       cell: "p-2 border-r border-gray-200",
     },
@@ -137,55 +137,50 @@ export default function Dashboard() {
   }
 
 return (
-      <Page className="grid grid-cols-[auto_2fr_auto] grid-rows-[auto_1fr] gap-4" >
-        <div className="col-start-2 col-end-3">
-          <header className="w-full">
-            <div className="flex justify-between">
-              <h2 className={"text-2xl font-bold"}>{project.title}</h2>
-              <div className="flex gap-2">
-                <ProjectForm project={project} setProject={setProject} triggerChild={true}>
-                  <Button variant="primary">Editar</Button>
-                </ProjectForm>
-            <Button variant="error"
-              onClick={() => {
-                setPrompt({
-                  content: {
-                    title: "Eliminar " + project.title,
-                    message: "¿Estás seguro de que deseas eliminar este proyecto?"
-                  },
-                  variant: "error",
-                  onCancel: () => { },
-                  onAccept: () => deleteProject(project.projectId)
-                });
-              }}
-            >Eliminar</Button>
+      <section className="grid grid-cols-[2fr_auto] gap-4 " >
+        <div className="">
+          <article className="rounded-md shadow bg-white p-4 grid gap-2">
+            <header className="w-full">
+              <div className="flex justify-between">
+                <h2 className={"text-2xl font-bold"}>{project.title}</h2>
+                <div className="flex gap-2">
+                  <ProjectForm project={project} setProject={setProject} triggerChild={true}>
+                    <Button variant="primary">Editar</Button>
+                  </ProjectForm>
+                  <Button variant="error"
+                    onClick={() => {
+                      setPrompt({
+                        content: {
+                          title: "Eliminar " + project.title,
+                          message: "¿Estás seguro de que deseas eliminar este proyecto?"
+                        },
+                        variant: "error",
+                        onCancel: () => { },
+                        onAccept: () => deleteProject(project.projectId)
+                      });
+                    }}
+                  >Eliminar</Button>
+                </div>
               </div>
+              <p>Entrega: {project.endDate?.toLocaleDateString("es-ES")}</p>
+              <p>Monto: RD{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(project.total)}</p>
+            </header>
+            <div className="overflow-auto shadow-lg rounded-md border border-gray-300">
+              <Table
+                data={project.items ?? []}
+                columns={columns as ColumnDef<unknown>[]}
+                styles={tableStyles}
+              >
+                <TableHead/>
+                <TableBody/>
+              </Table>
             </div>
-            <p>Entrega: {project.endDate?.toLocaleDateString("es-ES")}</p>
-            <p>Monto: RD{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(project.total)}</p>
-          </header>
-        </div>
-        <div className="row-start-1 row-end-3 col-span-1">
-          {
-            //side bar
-          }
-        </div>
-        <div className="row-start-2 col-start-2">
-          <article className="overflow-auto shadow-lg rounded-md border border-gray-300">
-            <Table
-              data={project.items ?? []}
-              columns={columns as ColumnDef<unknown>[]}
-              styles={tableStyles}
-            >
-              <TableHead/>
-              <TableBody/>
-            </Table>
             <WindowFormModal open={openWindowForm} setOpen={setOpenWindowForm}/>,
           </article>
         </div>
-        <div className="row-start-1 row-end-3">
+        <div className="">
           <ProjectSelector/>
         </div>
-      </Page>
+      </section>
     );
 }
