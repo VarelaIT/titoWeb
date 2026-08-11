@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { PRESETS_STORAGE, type IStoragePreset } from "../../scripts/presetStorage";
 import { STORAGE_CONSTANTS, type IProject, type TWindow } from "../../scripts/types";
 import { useProject } from "../providers/project.provider";
 import { Button } from "../elements/buttons";
 import { WindowMeasurements } from "../../scripts/windowsMeasurement";
-import { PlusIcon } from "lucide-react";
+import { ArrowDown, ArrowUp, PlusIcon } from "lucide-react";
 import ProjectForm from "../forms/projectFrom";
 import { Page } from "../elements/pages";
 
@@ -29,12 +29,27 @@ function getTimeConsumed(startDate: Date, endDate?: Date): number {
   return Math.min(100, Math.max(1, ((now - start) / duration) * 100));
 }
 
+type SortType = {key: string, dir: "asc" | "desc"};
+
 export default function ProjectSelector(){
   const {project, setProject} = useProject();
+  const [sortState, setSortState] = useState<SortType>({key: "endDate", dir: "asc"});
+  const sortersOptions: {key: string, label: string}[] = [
+    {key: "endDate", label: "Fecha de Entrega"},
+    {key: "startDate", label: "Fecha de Inicio"},
+    {key: "total", label: "Total"},
+  ];
 
   const projects = useMemo<IProject[]>(() => {
-    return loadProject();
-  }, [project]);
+    const loadedProjects = loadProject();
+    return loadedProjects.sort((a, b) => {
+      const keyA = a[sortState.key as keyof IProject];
+      const keyB = b[sortState.key as keyof IProject];
+      if(keyA === undefined) return 1;
+      if(keyB === undefined) return -1;
+      return sortState.dir === "asc" ? keyA - keyB : keyB - keyA;
+    });
+  }, [project, sortState]);
 
   function loadProject(): IProject[] {
     const projects:IStoragePreset[] | undefined = PRESETS_STORAGE.get(STORAGE_CONSTANTS.PROJECTS) as IStoragePreset[] | undefined;
@@ -61,13 +76,28 @@ export default function ProjectSelector(){
         <ProjectForm project={{projectId: Date.now().toString(), title: "", startDate: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
           <Button
             variant="transparent"
-            className="text-blue-600"
+            className="text-green-600"
             title="Crear Projecto Nuevo"
           >
             <PlusIcon size={16} />
           </Button>
         </ProjectForm>
       </header>
+      <ul className="py-2 pb-4 flex gap-2">
+        {sortersOptions.map((option, i) =>
+          <li key={"sorter" + i}>
+            <Button
+              className="flex items-center justifyjustify-around gap-2 text-sm px-1 py-1"
+              variant="transparent"
+              title={"Ordenar por " + option.label}
+              onClick={() => setSortState({key: option.key, dir: (option.key === sortState.key && sortState.dir === "asc") ? "desc" : "asc"})}
+            >
+              <span>{option.label}</span>
+              {(option.key === sortState.key && sortState.dir === "asc")? <ArrowUp size={12} className="text-blue-600" /> : <ArrowDown size={12} className="text-blue-600" />}
+            </Button>
+          </li>
+        )}
+      </ul>
       <ul className="max-h-[80vh] overflow-auto">
         {projects.map((proj: IProject, i: number) => {
           const progress = getTimeConsumed(proj.startDate, proj.endDate);
