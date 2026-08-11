@@ -1,6 +1,5 @@
-import type { ColumnDef } from "@tanstack/react-table";
+import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { Button } from "../elements/buttons";
-import { Page } from "../elements/pages";
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import ProjectForm from "../forms/projectFrom";
 import { useProject } from "../providers/project.provider";
@@ -84,11 +83,13 @@ export default function Dashboard() {
       ...defaultColumnConf,
       header: "Base",
       accessorKey: "base",
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
       header: "Altura",
       accessorKey: "height",
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
@@ -99,31 +100,37 @@ export default function Dashboard() {
       ...defaultColumnConf,
       header: "Rieles",
       accessorFn: (row) => row.getRails(),
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
       header: "Laterales",
       accessorFn: (row) => row.getLaterals(),
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
       header: "Alfaisal",
       accessorFn: (row) => row.getAlfaisal(),
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
       header: "Jambas",
       accessorFn: (row) => row.getJambas(),
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
       header: "Base de Cristal",
       accessorFn: (row) => row.getGlassBase(),
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
     {
       ...defaultColumnConf,
       header: "Altura de Cristal",
       accessorFn: (row) => row.getGlassHeigth(),
+      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
   ];
 
