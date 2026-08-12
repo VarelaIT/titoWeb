@@ -1,4 +1,6 @@
-# Tito Web
+# Tito Web (v2.0.1)
+
+Available in desktop executable.
 
 ## Dependencies
 
@@ -14,6 +16,4 @@ Run from the root of this project
 npm run tauri build
 ```
 
-### Pending 
-
-  Reusable window form for adding multible items in the form instance
+### Pending
