@@ -17,3 +17,5 @@ npm run tauri build
 ```
 
 ### Pending
+
+  Decimal points in input fields type number
