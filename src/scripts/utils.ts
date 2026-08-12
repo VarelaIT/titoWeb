@@ -58,6 +58,99 @@ export function exportProject(project: Array<WindowMeasurements>, description: {
     return Papa.unparse(conf);
 }
 
+
+export function printProject(project: IProject) {
+    const printWindow = window.open("", "_blank");
+
+
+    if(printWindow){
+        printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>VentARELA</title>
+            <style>
+                body {
+                    font-family: Arial, Helvetica, sans-serif;
+                    text-align: center;
+                    margin: 40px;
+                }
+
+                h1, p {
+                    margin: 0.5em 0;
+                }
+                table {
+                  border-collapse: collapse;
+                  width: 100%;
+                }
+                th, td {
+                  border: 1px solid ;
+                  padding: 4px;
+                }
+                th {
+                  border: 1px solid ;
+                  padding: 8px;
+                }
+                tr:nth-child(odd) {
+                  background-color: #f2f2f2;
+                }
+                thead tr:nth-child(odd) {
+                  background-color: #fff;
+                }
+            </style>
+        </head>
+        <body>
+            <header>
+                <h1>${project.title}</h1>
+                <p>Fecha de Entrega: ${project.endDate?.toLocaleDateString("es-ES")}</p>
+                <p>Total: RD${new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(project.total)}</p>
+                <p><b>VentARELA</b></p>
+            </header>
+            <main>
+                <article className={
+                    "grid gap-4 py-4 translate-x-2 "
+                    + animation
+                }>
+                    <table id="table-container">
+                      <thead>
+                        <tr>
+                          <th>Tipo</th>
+                          <th>Base</th>
+                          <th>Altura</th>
+                          <th>Rieles</th>
+                          <th>Laterales</th>
+                          <th>Afaisal</th>
+                          <th>Jambas</th>
+                          <th>Cristal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${project.items?.map(item => `
+                          <tr>
+                            <td style="font-weight: 600">${item.type}</td>
+                            <td style="font-style: italic; font-size: 14px">${item.base.toFixed(2)}</td>
+                            <td style="font-style: italic; font-size: 14px">${item.height.toFixed(2)}</td>
+                            <td>${item.getRails().toFixed(2)}</td>
+                            <td>${item.getLaterals().toFixed(2)}</td>
+                            <td>${item.getAlfaisal().toFixed(2)}</td>
+                            <td>${item.getJambas().toFixed(2)}</td>
+                            <td>${item.getGlassBase().toFixed(2)} x ${item.getGlassHeigth().toFixed(2)}</td>
+                          </tr>
+                        `).join("")}
+                      </tbody>
+                    </table>
+                </article>
+            </main>
+        </body>
+        </html>
+        `);
+
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+    }
+}
 export function printWindow(wm: WindowMeasurements, modern: boolean){
     const printWindow = window.open("", "_blank");
 

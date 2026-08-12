@@ -1,15 +1,15 @@
-import type { CellContext, ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../elements/buttons";
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import ProjectForm from "../forms/projectFrom";
 import { useProject } from "../providers/project.provider";
 import type { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import { WindowFormModal } from "../elements/dialogs/windowFromModal";
-import { Plus, Trash } from "lucide-react";
+import { Plus, Printer, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import { STORAGE_CONSTANTS, type ITableStyles } from "../../scripts/types";
 import ProjectSelector from "../blocks/projectSelector";
-import { loadProject } from "../../scripts/utils";
+import { loadProject, printProject } from "../../scripts/utils";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
 import { usePrompt } from "../providers/prompt.provider";
 import { useState } from "react";
@@ -41,14 +41,24 @@ export default function Dashboard() {
     {
       ...defaultColumnConf,
       id: "Acciones",
-      header: () =>
-        <Button
-          title="Agregar"
-          variant="transparent"
-          onClick={() => setOpenWindowForm(true)}
-        >
-          <Plus size={16} className="text-blue-600" />
-        </Button>,
+      header: () => (
+        <div className="flex gap-2">
+          <Button
+            title="Agregar"
+            variant="transparent"
+            onClick={() => setOpenWindowForm(true)}
+          >
+            <Plus size={16} className="text-green-600" />
+          </Button>
+          <Button
+            title="Imprimir"
+            variant="transparent"
+            onClick={() => printProject(project)}
+          >
+            <Printer size={16} className="text-blue-600" />
+          </Button>
+        </div>
+      ),
       pinned: "left",
       cell: ({ row }) => <div className="sticky left-0">
         <Button
@@ -133,6 +143,9 @@ export default function Dashboard() {
       cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
   ];
+
+
+
 
   const { project, setProject } = useProject();
   const { setPrompt } = usePrompt();

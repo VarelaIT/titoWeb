@@ -1,14 +1,15 @@
 import { ToastContainer } from 'react-toastify';
 import './App.css'
 import { AppHeader } from './components/layout/header'
-import { Tabs, type Tab } from './components/layout/tab'
-import ProjectPage from './components/pages/project';
-import { WindowCalculator } from './components/pages/windowCalculator';
 import Dashboard from './components/pages/dashboard';
 import Providers from './components/providers';
+//import { type Tab } from './components/layout/tab'
+//import ProjectPage from './components/pages/project';
+//import { WindowCalculator } from './components/pages/windowCalculator';
 
 function App() {
 
+  /*
   const tabs: Tab[] = [
     {
       legend: "Projecto",
@@ -29,6 +30,7 @@ function App() {
       tabBtnStyle: "bg-slate-500 text-white dark:bg-slate-800 dark:text-gray-200 hover:bg-slate-700 dark:hover:bg-slate-950",
     },
   ];
+  */
 
   return (
     <Providers>
