@@ -1,5 +1,5 @@
-import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
-import { type ReactNode } from "react";
+import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef, type ColumnPinningState } from "@tanstack/react-table";
+import { useState, type ReactNode } from "react";
 import { TableProvider } from "../../providers/table.provider";
 import { ChevronDown, ChevronsUpDown, ChevronUp, Group, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
@@ -11,13 +11,17 @@ export interface ITableProps{
     columns: ColumnDef<unknown>[],
     children: ReactNode,
     styles?: ITableStyles,
+    tableStates?: unknown,
 }
 
-export function Table({data, columns, children, styles}: ITableProps) {
+export function Table({data, columns, children, styles, tableStates}: ITableProps) {
 
   const table = useReactTable({
     data,
     columns,
+    state: {
+      columnPinning:  (tableStates && tableStates.columnPinning) ? tableStates.columnPinning : undefined,
+    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
@@ -27,7 +31,7 @@ export function Table({data, columns, children, styles}: ITableProps) {
 
   return (
     <TableProvider table={table} styles={styles}>
-      <table className="w-full">
+      <table className="w-full" style={{borderCollapse: "unset"}}>
         {children}
       </table>
     </TableProvider>
@@ -53,9 +57,16 @@ export function TableHead(){
               ) => (
                 <th key={header.id}
                   colSpan={header.colSpan}
-                  className={styles?.head.cell}
+                  className={
+                    styles?.head.cell
+                      + " " + (header.column.getIsPinned() ? "sticky z-1 border-l" : "")
+                      + " " + (header.column.getIsPinned() === "left" ? "left-0" : "")
+                      + " " + (header.column.getIsPinned() === "right" ? "right-0" : "")
+                  }
                 >
-                  <div className="flex items-center justify-between gap-2">
+                  <div
+                    className={"flex items-center justify-between gap-2"}
+                  >
                     <span>
                       {flexRender(
                         header.column.columnDef.header,
@@ -110,7 +121,12 @@ export function TableBody(){
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}
-                    className={styles?.body.cell}
+                  className={
+                    styles?.body.cell
+                    + " " + (cell.column.getIsPinned() ? "sticky z-1 bg-white border-b border-gray-200" : "")
+                    + " " + (cell.column.getIsPinned() === "left" ? "left-0 border-r" : "")
+                    + " " + (cell.column.getIsPinned() === "right" ? "right-0 border-l" : "")
+                  }
                     onClick={row.getToggleExpandedHandler()}
                 >
                   <div className="flex gap-2">

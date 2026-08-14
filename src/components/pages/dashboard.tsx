@@ -1,4 +1,4 @@
-import type { ColumnDef } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "../elements/buttons";
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import ProjectForm from "../forms/projectFrom";
@@ -19,12 +19,12 @@ export default function Dashboard() {
     head: {
       container: "",
       row: "shadow-md p-0 m-0 bg-gray-100",
-      cell: "font-medium p-2 m-0 border-r border-gray-200 truncate",
+      cell: "font-medium p-2 m-0 border-r border-gray-200 truncate bg-gray-100",
     },
     body: {
       container: "bg-white",
       row: "border-b border-gray-200 hover:bg-gray-300 even:bg-gray-100",
-      cell: "p-2 border-r border-gray-200",
+      cell: "p-2 border-r border-gray-200 ",
     },
     footer: {
       container: "",
@@ -41,6 +41,7 @@ export default function Dashboard() {
     {
       ...defaultColumnConf,
       id: "Acciones",
+      enablePinning: true,
       header: () => (
         <div className="flex gap-2">
           <Button
@@ -59,7 +60,6 @@ export default function Dashboard() {
           </Button>
         </div>
       ),
-      pinned: "left",
       cell: ({ row }) => <div className="sticky left-0">
         <Button
           title="Eliminar"
@@ -190,6 +190,11 @@ return (
                 data={project.items ?? []}
                 columns={columns as ColumnDef<unknown>[]}
                 styles={tableStyles}
+                tableStates={{
+                  columnPinning: {
+                    right: ["Acciones"],
+                  }
+                }}
               >
                 <TableHead/>
                 <TableBody/>
