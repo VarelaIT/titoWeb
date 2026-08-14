@@ -38,6 +38,7 @@ export default function ProjectSelector(){
     {key: "endDate", label: "Fecha de Entrega"},
     {key: "startDate", label: "Fecha de Inicio"},
     {key: "total", label: "Total"},
+    {key: "items", label: "Articulos"},
   ];
 
   const projects = useMemo<IProject[]>(() => {
@@ -47,6 +48,7 @@ export default function ProjectSelector(){
       const keyB = b[sortState.key as keyof IProject];
       if(keyA === undefined) return 1;
       if(keyB === undefined) return -1;
+      if(sortState.key === "items") return sortState.dir === "asc" ? keyA.length - keyB.length : keyB.length - keyA.length;
       return sortState.dir === "asc" ? keyA - keyB : keyB - keyA;
     });
   }, [project, sortState]);
@@ -83,7 +85,7 @@ export default function ProjectSelector(){
           </Button>
         </ProjectForm>
       </header>
-      <ul className="py-2 pb-4 flex gap-2">
+      <ul className="py-2 pb-4 flex gap-2 flex-wrap">
         {sortersOptions.map((option, i) =>
           <li key={"sorter" + i}>
             <Button
@@ -93,7 +95,7 @@ export default function ProjectSelector(){
               onClick={() => setSortState({key: option.key, dir: (option.key === sortState.key && sortState.dir === "asc") ? "desc" : "asc"})}
             >
               <span>{option.label}</span>
-              {(option.key === sortState.key && sortState.dir === "asc")? <ArrowUp size={12} className="text-blue-600" /> : <ArrowDown size={12} className="text-blue-600" />}
+              {option.key === sortState.key ? sortState.dir === "asc"? <ArrowUp size={12} className="text-blue-600" /> : <ArrowDown size={12} className="text-blue-600" />: null}
             </Button>
           </li>
         )}
