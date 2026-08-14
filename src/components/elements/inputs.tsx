@@ -22,7 +22,7 @@ export function Input(props: IInputProps) {
 
     return (
         <input
-            type="text"
+            type={props.type ?? "text"}
             className={baseStyle + props.className}
             inputMode={props.inputMode}
             placeholder={props.placeHolder}
