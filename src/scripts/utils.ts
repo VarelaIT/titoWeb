@@ -1,5 +1,5 @@
 import { PRESETS_STORAGE } from "./presetStorage";
-import { STORAGE_CONSTANTS, type IProject, type IStoredProject, type TWindow } from "./types";
+import { STORAGE_CONSTANTS, type IProject, type IProjectData, type IProjectItems, type IStoredProject, type TWindow } from "./types";
 import { WindowMeasurements } from "./windowsMeasurement";
 import Papa, { type UnparseObject } from 'papaparse';
 
@@ -59,7 +59,7 @@ export function exportProject(project: Array<WindowMeasurements>, description: {
 }
 
 
-export function printProject(project: IProject) {
+export function printProject(project: IProjectData, items: Array<WindowMeasurements>) {
     const printWindow = window.open("", "_blank");
 
 
@@ -125,7 +125,7 @@ export function printProject(project: IProject) {
                         </tr>
                       </thead>
                       <tbody>
-                        ${project.items?.map(item => `
+                        ${items.map(item => `
                           <tr>
                             <td style="font-weight: 600">${item.type}</td>
                             <td style="font-style: italic; font-size: 14px">${item.base.toFixed(2)}</td>

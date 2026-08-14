@@ -3,7 +3,7 @@ import { Button } from "../elements/buttons";
 import { Table, TableBody, TableHead } from "../elements/tables/table";
 import ProjectForm from "../forms/projectFrom";
 import { useProject } from "../providers/project.provider";
-import type { WindowMeasurements } from "../../scripts/windowsMeasurement";
+import { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import { WindowFormModal } from "../elements/dialogs/windowFromModal";
 import { Plus, Printer, Trash } from "lucide-react";
 import { toast } from "react-toastify";
@@ -42,7 +42,7 @@ export default function Dashboard() {
       ...defaultColumnConf,
       id: "Acciones",
       enablePinning: true,
-      header: () => (
+      header: ({table}) => (
         <div className="flex gap-2">
           <Button
             title="Agregar"
@@ -54,7 +54,10 @@ export default function Dashboard() {
           <Button
             title="Imprimir"
             variant="transparent"
-            onClick={() => printProject(project)}
+            onClick={() => printProject(
+              project,
+              table.getRowModel().rows.map((row) => new WindowMeasurements({ ...row.original }))
+            )}
           >
             <Printer size={16} className="text-blue-600" />
           </Button>

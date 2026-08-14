@@ -61,12 +61,16 @@ export enum EStorage{
   THEME = "theme",
 }
 
-export interface IProject {
+export interface IProjectData {
   projectId: string;
   title: string,
   startDate: Date,
   endDate?: Date,
   total: number,
+}
+
+
+export interface IProject extends IProjectData {
   items?: Array<WindowMeasurements>,
 }
 
