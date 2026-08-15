@@ -1,5 +1,5 @@
 import { PRESETS_STORAGE } from "./presetStorage";
-import { STORAGE_CONSTANTS, type IProject, type IProjectData, type IProjectItems, type IStoredProject, type TWindow } from "./types";
+import { STORAGE_CONSTANTS, type IProject, type IProjectData, type IStoredProject, type TWindow } from "./types";
 import { WindowMeasurements } from "./windowsMeasurement";
 import Papa, { type UnparseObject } from 'papaparse';
 

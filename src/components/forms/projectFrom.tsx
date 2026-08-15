@@ -1,12 +1,14 @@
 import { Dialog } from "radix-ui"
-import { type ReactNode, useEffect, useState } from "react"
+import { type ReactNode, useState } from "react"
 import type { IProject } from "../../scripts/types"
 import { Button } from "../elements/buttons"
 import { DateInput, Input } from "../elements/inputs"
 import { toast } from "react-toastify"
 import { PROJECT_FORM_SCHEMA} from "../../scripts/zodSchemas"
 import { useForm } from "@tanstack/react-form";
+import * as z from "zod";
 import { FieldError } from "./fieldError"
+
 
 interface IProjectFormProps {
     project: IProject,
@@ -14,6 +16,7 @@ interface IProjectFormProps {
     triggerChild?: boolean
     children: ReactNode
 }
+type ProjectType = z.infer<typeof PROJECT_FORM_SCHEMA>;
 
 export default function ProjectForm({project, setProject, triggerChild, children}: IProjectFormProps){
   const [open, setOpen] = useState(false);
@@ -21,9 +24,9 @@ export default function ProjectForm({project, setProject, triggerChild, children
     defaultValues: {
       title: project.title,
       startDate: project.startDate,
-      endDate: project.endDate,
-      total: project.total
-    },
+      endDate: project.endDate as Date | undefined,
+      total: project.total as number | undefined
+    } satisfies ProjectType,
     validators: { onChange: PROJECT_FORM_SCHEMA },
     onSubmit: ({ value }) => {
       setProject({
@@ -31,7 +34,7 @@ export default function ProjectForm({project, setProject, triggerChild, children
         title: value.title,
         startDate: value.startDate,
         endDate: value.endDate,
-        total: value.total
+        total: value.total?? 0
       });
       form.reset();
       toast.success("Projecto Guardado");
@@ -95,7 +98,7 @@ export default function ProjectForm({project, setProject, triggerChild, children
                   <legend>Monto</legend>
                   <Input
                     type="number"
-                    value={isNaN(field.state.value) ? "" : field.state.value}
+                    value={(field.state.value && isNaN(field.state.value)) ? "" : field.state.value}
                     placeHolder="0.00"
                     onChange={(props)=> {
                       field.handleChange(Number.parseFloat(props.target.value));

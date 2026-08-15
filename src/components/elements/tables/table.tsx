@@ -1,5 +1,5 @@
-import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef, type ColumnPinningState } from "@tanstack/react-table";
-import { useState, type ReactNode } from "react";
+import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
+import { type ReactNode } from "react";
 import { TableProvider } from "../../providers/table.provider";
 import { ChevronDown, ChevronsUpDown, ChevronUp, Group, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
@@ -11,7 +11,7 @@ export interface ITableProps{
     columns: ColumnDef<unknown>[],
     children: ReactNode,
     styles?: ITableStyles,
-    tableStates?: unknown,
+    tableStates?: Record<string, Object>,
 }
 
 export function Table({data, columns, children, styles, tableStates}: ITableProps) {

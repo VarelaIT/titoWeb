@@ -48,8 +48,13 @@ export default function ProjectSelector(){
       const keyB = b[sortState.key as keyof IProject];
       if(keyA === undefined) return 1;
       if(keyB === undefined) return -1;
-      if(sortState.key === "items") return sortState.dir === "asc" ? keyA.length - keyB.length : keyB.length - keyA.length;
-      return sortState.dir === "asc" ? keyA - keyB : keyB - keyA;
+      if(sortState.key === "items" && Array.isArray(keyA) && Array.isArray(keyB)) 
+        return sortState.dir === "asc" ? keyA.length - keyB.length : keyB.length - keyA.length;
+      if(keyA instanceof Date && keyB instanceof Date)
+        return sortState.dir === "asc" ? keyA.getTime() - keyB.getTime() : keyB.getTime() - keyA.getTime();
+      if(typeof keyA === "number"  && typeof keyB === "number" )
+        return sortState.dir === "asc" ? keyA - keyB : keyB - keyA;
+      return 0;
     });
   }, [project, sortState]);
 
