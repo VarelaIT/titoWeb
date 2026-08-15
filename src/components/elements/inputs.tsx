@@ -13,8 +13,8 @@ export function Input(props: IInputProps) {
 
     function getStyles(){
         const result = "p-2 rounded-md w-full "
-            + "text-stone-800 dark:text-stone-400 "
-            + "border-2 border-stone-800 dark:border-stone-400 "
+            + "text-stone-800 dark:text-stone-200 "
+            + "border-2 border-stone-800 dark:border-stone-200 "
         ;
 
         return result;

@@ -19,8 +19,8 @@ export default function PromptModal() {
     switch (prompt?.variant) {
       case "error":
         return {
-          headerStyle: "text-red-500",
-          bodyStyle: "bg-red-50",
+          headerStyle: "text-red-500 dark:text-red-300",
+          bodyStyle: "bg-red-50 dark:bg-red-950",
         };
       case "warning":
         return {
@@ -56,7 +56,7 @@ export default function PromptModal() {
               </Button>
             </Dialog.Close>
           </header>
-          <Dialog.Description>{content.message}</Dialog.Description>
+          <Dialog.Description className="dark:text-stone-50">{content.message}</Dialog.Description>
           <div className="flex justify-end gap-4">
             {onCancel &&
               <Dialog.Close>

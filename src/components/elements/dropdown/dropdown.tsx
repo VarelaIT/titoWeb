@@ -16,10 +16,10 @@ export function Dropdown({ options, onChange, asChild, className, children }: ID
       <DropdownMenu.Trigger asChild={asChild} className={className}>
         {children}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="bg-white shadow-md rounded-md p-2">
+      <DropdownMenu.Content className="bg-stone-50 dark:bg-stone-700 shadow-md rounded-md p-2">
         {options.map((option, i) =>
           <DropdownMenu.Item key={"dropdown-item-" + option.label + "-" + i} onSelect={() => onChange(option)}
-            className="hover:bg-gray-100 cursor-pointer p-2"
+            className="hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer p-2"
           >{option.label}</DropdownMenu.Item>
         )}
       </DropdownMenu.Content>

@@ -72,7 +72,7 @@ export default function ProjectSelector(){
   }
 
   return (
-    <Page className="bg-white">
+    <Page className="bg-stone-50 dark:bg-stone-700">
       <header className="flex justify-between items-center p-2">
         <h2 className="text-xl font-bold">Listado de Proyectos</h2>
         <ProjectForm project={{projectId: Date.now().toString(), title: "", startDate: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
@@ -105,8 +105,8 @@ export default function ProjectSelector(){
           const progress = getTimeConsumed(proj.startDate, proj.endDate);
           return <li key={"project" + i}
             className={
-              "dark:hover:bg-stone-900 hover:bg-stone-200 p-2 cursor-pointer rounded-md shadow-sm mb-2 "
-              + (proj.projectId === project.projectId ? " dark:bg-stone-950 bg-stone-300" : "dark:bg-stone-700 bg-stone-100")
+              "dark:hover:bg-stone-900 hover:bg-stone-400 p-2 cursor-pointer rounded-md shadow-sm mb-2 "
+              + (proj.projectId === project.projectId ? " dark:bg-stone-950 bg-stone-300" : "dark:bg-stone-700 bg-stone-200")
             }
             onClick={() => setProject(proj)}
           >
