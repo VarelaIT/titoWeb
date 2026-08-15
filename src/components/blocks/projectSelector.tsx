@@ -78,7 +78,7 @@ export default function ProjectSelector(){
         <ProjectForm project={{projectId: Date.now().toString(), title: "", startDate: new Date(), total: 0}} setProject={setProject} triggerChild={true}>
           <Button
             variant="transparent"
-            className="text-green-600"
+            className="text-green-600 dark:text-green-400"
             title="Crear Projecto Nuevo"
           >
             <PlusIcon size={16} />
@@ -105,8 +105,8 @@ export default function ProjectSelector(){
           const progress = getTimeConsumed(proj.startDate, proj.endDate);
           return <li key={"project" + i}
             className={
-              "dark:hover:bg-stone-600 hover:bg-stone-200 p-2 cursor-pointer rounded-md shadow-sm mb-2 "
-              + (proj.projectId === project.projectId ? " dark:bg-stone-600 bg-stone-300" : "dark:bg-stone-400 bg-stone-100")
+              "dark:hover:bg-stone-900 hover:bg-stone-200 p-2 cursor-pointer rounded-md shadow-sm mb-2 "
+              + (proj.projectId === project.projectId ? " dark:bg-stone-950 bg-stone-300" : "dark:bg-stone-700 bg-stone-100")
             }
             onClick={() => setProject(proj)}
           >

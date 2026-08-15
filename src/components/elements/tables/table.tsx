@@ -31,7 +31,7 @@ export function Table({data, columns, children, styles, tableStates}: ITableProp
 
   return (
     <TableProvider table={table} styles={styles}>
-      <table className="w-full" style={{borderCollapse: "unset"}}>
+      <table className="w-full border-spacing-0" style={{borderCollapse: "unset"}}>
         {children}
       </table>
     </TableProvider>
@@ -123,7 +123,7 @@ export function TableBody(){
                 <td key={cell.id}
                   className={
                     styles?.body.cell
-                    + " " + (cell.column.getIsPinned() ? "sticky z-1 bg-white border-b border-gray-200" : "")
+                    + " " + (cell.column.getIsPinned() ? "sticky z-1 bg-white dark:bg-stone-700 border-b border-gray-200" : "")
                     + " " + (cell.column.getIsPinned() === "left" ? "left-0 border-r" : "")
                     + " " + (cell.column.getIsPinned() === "right" ? "right-0 border-l" : "")
                   }

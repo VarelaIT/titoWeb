@@ -5,7 +5,7 @@ import ProjectForm from "../forms/projectFrom";
 import { useProject } from "../providers/project.provider";
 import { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import { WindowFormModal } from "../elements/dialogs/windowFromModal";
-import { Plus, Printer, Trash } from "lucide-react";
+import { Pen, Plus, Printer, Trash } from "lucide-react";
 import { toast } from "react-toastify";
 import { STORAGE_CONSTANTS, type ITableStyles } from "../../scripts/types";
 import ProjectSelector from "../blocks/projectSelector";
@@ -18,13 +18,13 @@ export default function Dashboard() {
   const tableStyles: ITableStyles = {
     head: {
       container: "",
-      row: "shadow-md p-0 m-0 bg-gray-100",
-      cell: "font-medium p-2 m-0 border-r border-gray-200 truncate bg-gray-100",
+      row: "p-0 m-0 bg-gray-100 dark:bg-gray-800 ",
+      cell: "font-medium p-2 m-0 border-r border-b border-gray-200 truncate bg-gray-100 dark:bg-stone-700",
     },
     body: {
-      container: "bg-white",
-      row: "border-b border-gray-200 hover:bg-gray-300 even:bg-gray-100",
-      cell: "p-2 border-r border-gray-200 ",
+      container: "",
+      row: "dark:bg-stone-800 hover:bg-gray-300 bg-white dark:hover:bg-stone-500 even:bg-gray-100 dark:even:bg-stone-700",
+      cell: "p-2 border-b border-r border-gray-200 ",
     },
     footer: {
       container: "",
@@ -49,7 +49,7 @@ export default function Dashboard() {
             variant="transparent"
             onClick={() => setOpenWindowForm(true)}
           >
-            <Plus size={16} className="text-green-600" />
+            <Plus size={16} className="text-green-600 dark:text-green-400" />
           </Button>
           <Button
             title="Imprimir"
@@ -59,15 +59,15 @@ export default function Dashboard() {
               table.getRowModel().rows.map((row) => new WindowMeasurements({ ...row.original }))
             )}
           >
-            <Printer size={16} className="text-blue-600" />
+            <Printer size={16} className="text-blue-600 dark:text-blue-400" />
           </Button>
         </div>
       ),
-      cell: ({ row }) => <div className="sticky left-0">
+      cell: ({ row }) => <div className="sticky left-0 h-full w-full">
         <Button
           title="Eliminar"
           variant="transparent"
-          className="text-gray-600 hover:text-red-500"
+          className="text-gray-600 hover:text-red-600 dark:text-red-400"
           onClick={() => {
             setPrompt({
               content: {
@@ -162,13 +162,15 @@ export default function Dashboard() {
 return (
       <section className="grid grid-cols-[2fr_auto] gap-4 " >
         <div className="">
-          <article className="rounded-md shadow bg-white p-4 grid gap-2">
+          <article className="rounded-md shadow bg-stone-100 dark:bg-stone-800 p-4 grid gap-2">
             <header className="w-full">
               <div className="flex justify-between">
                 <h2 className={"text-2xl font-bold"}>{project.title}</h2>
                 <div className="flex gap-2">
                   <ProjectForm project={project} setProject={setProject} triggerChild={true}>
-                    <Button variant="primary">Editar</Button>
+                    <Button variant="primary" title="Editar Projecto">
+                      <Pen size={20}/>
+                    </Button>
                   </ProjectForm>
                   <Button variant="error"
                     onClick={() => {
@@ -182,13 +184,15 @@ return (
                         onAccept: () => deleteProject(project.projectId)
                       });
                     }}
-                  >Eliminar</Button>
+                  >
+                    <Trash size={20} />
+                  </Button>
                 </div>
               </div>
               <p>Entrega: {project.endDate?.toLocaleDateString("es-ES")}</p>
               <p>Monto: RD{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(project.total)}</p>
             </header>
-            <div className="overflow-auto shadow-lg rounded-md border border-gray-300">
+            <div className="overflow-auto shadow-md dark:shadow-stone-500 rounded-md border border-gray-300 dark:border-s-stone-900">
               <Table
                 data={project.items ?? []}
                 columns={columns as ColumnDef<unknown>[]}
@@ -203,7 +207,7 @@ return (
                 <TableBody/>
               </Table>
             </div>
-            <WindowFormModal open={openWindowForm} setOpen={setOpenWindowForm}/>,
+            <WindowFormModal open={openWindowForm} setOpen={setOpenWindowForm}/>
           </article>
         </div>
         <div className="">

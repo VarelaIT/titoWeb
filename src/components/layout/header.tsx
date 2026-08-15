@@ -14,11 +14,10 @@ export function AppHeader(){
             <Button
                 variant="transparent"
                 onClick={()=> {
-                    console.log("toggle theme...", theme)
                     setTheme(theme === "light"? "dark" : "light");
                 }}
             >
-                {theme === "light"? 
+                {theme === "light"?
                     <Moon size={16}/>
                     :
                     <Sun size={16}/>
