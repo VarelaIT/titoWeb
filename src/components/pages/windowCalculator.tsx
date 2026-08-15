@@ -7,18 +7,26 @@ import { Sigma } from "lucide-react";
 import { calcWindow, printWindow } from "../../scripts/utils";
 import { WINDOW_SCHEMA } from "../../scripts/zodSchemas";
 import * as z from "zod";
-import type { ClassicWindowMeasurements, ModernWindowMeasurements } from "../../scripts/windowsMeasurement";
+import type { WindowMeasurements } from "../../scripts/windowsMeasurement";
+import { PRESETS_STORAGE } from "../../scripts/presetStorage";
+import { useProject } from "../providers/project.provider";
 
 export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonStyle?: TStyleVariant}){
-    const [window, setWindow] = useState<IWindowInputs>({base: undefined, height: undefined, panels: "2"});
-    const [details, setDetails] = useState<ClassicWindowMeasurements | ModernWindowMeasurements | undefined>(undefined);
+    const [window, setWindow] = useState<IWindowInputs>({type: modern? "p-65" : "classic", base: undefined, height: undefined, panels: "2"});
+    const [details, setDetails] = useState<WindowMeasurements | undefined>(undefined);
     const [slideIn, setSlideIn] = useState(true);
+    const {project, setProject} = useProject();
 
     useMemo(()=> setDetails(undefined), [modern]);
 
+    function save(wm: WindowMeasurements){
+        const newItems = project.items? [...project.items, wm] : [wm];
+        setProject({...project, items: newItems})
+    }
+
     const Resume = useMemo(()=> {
         const animation = slideIn? "motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-md " : "";
-        if(details){ 
+        if(details){
 
             return <article className={
                 "grid gap-4 py-4 translate-x-2 "
@@ -54,9 +62,9 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                 </p>
                 <p className="flex justify-center gap-4">
                     <Button variant={buttonStyle}
-                        onClick={()=> printWindow(details, modern)}
+                        onClick={()=> save(details)}
                     >
-                        Imprimir
+                       Guardar
                     </Button>
                 </p>
             </article>
@@ -74,12 +82,12 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                 <p>
                     <label className={`grid grid-cols-4 gap-2`}>
                         <span className="text-md col-span-1 text-right">Base</span>
-                        <Input 
+                        <Input
                             className="col-span-3"
-                            inputMode="decimal" 
-                            placeHolder="Base del rectangulo" 
-                            required 
-                            pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}" 
+                            inputMode="decimal"
+                            placeHolder="Base del rectangulo"
+                            required
+                            pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}"
                             value={window.base}
                             onChange={(e)=> {
                                 setSlideIn(false)
@@ -92,12 +100,12 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                 <p>
                     <label className={`grid grid-cols-4 gap-2`}>
                         <span className="text-md col-span-1 text-right">Altura</span>
-                        <Input 
+                        <Input
                             className="col-span-3"
-                            inputMode="decimal" 
-                            placeHolder="Altura del rectangulo" 
-                            required 
-                            pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}" 
+                            inputMode="decimal"
+                            placeHolder="Altura del rectangulo"
+                            required
+                            pattern="\d{1,4}|\d{1,4}\.|\d{1,4}\.\d{1,2}"
                             value={window.height}
                             onChange={(e)=> {
                                 setSlideIn(false)
@@ -110,12 +118,12 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                 <p>
                     <label className={`grid grid-cols-4 gap-2`}>
                         <span className="text-md col-span-1 text-right">Paneles</span>
-                        <Input 
+                        <Input
                             className="col-span-3"
-                            inputMode="decimal" 
-                            placeHolder="Cantidad de paneles" 
-                            required 
-                            pattern="\d" 
+                            inputMode="decimal"
+                            placeHolder="Cantidad de paneles"
+                            required
+                            pattern="\d"
                             value={window.panels}
                             onChange={(e)=> {
                                 setSlideIn(false)
@@ -129,12 +137,13 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                     variant={buttonStyle}
                     onClick={()=> {
                         const newWindow = {
+                            type: modern? "p-65" : "classic",
                             base: parseFloat(window.base?? ""),
                             height: parseFloat(window.height?? ""),
                             panels: parseInt(window.panels?? ""),
                         }
                         try{
-                        setDetails(calcWindow(WINDOW_SCHEMA.parse(newWindow), modern))
+                        setDetails(calcWindow(WINDOW_SCHEMA.parse(newWindow)))
                         setSlideIn(true)
                         }catch(error){
                             if(error instanceof z.ZodError){
@@ -149,7 +158,7 @@ export function WindowCalculator({modern, buttonStyle}: {modern:boolean, buttonS
                         <Sigma />
                         <span>Ejecutar Calculo</span>
                     </span>
-                </Button> 
+                </Button>
             </article>
         </Page>
     )

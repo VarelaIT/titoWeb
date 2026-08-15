@@ -9,7 +9,7 @@ export function Page({variant, className, style, children}: IPageProps){
 
     function getPageStyle(variant?: TStyleVariant){
         let result = "rounded-md bg-stone-100 dark:bg-stone-800 p-4 "
-            + "shadow-lg dark:shadow-blue-500/50"
+            + "shadow-md dark:shadow-stone-500/50"
             ;
 
         switch(variant){
@@ -22,9 +22,9 @@ export function Page({variant, className, style, children}: IPageProps){
     }
 
     return <section
-        className={baseStyle + className}
+        className={baseStyle + " " + className}
         style={style}
     >
-        {children}
+        {children&& children}
     </section>
 }
