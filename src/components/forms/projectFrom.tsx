@@ -48,8 +48,8 @@ export default function ProjectForm({project, setProject, triggerChild, children
         {children}
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}/>
-        <Dialog.Content  className={"absolute bg-white p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2"}>
+        <Dialog.Overlay className={"fixed inset-0 w-screen h-screen bg-gray-500/40 z-10"}/>
+        <Dialog.Content  className={"absolute bg-stone-50 dark:bg-stone-600 p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2 z-20 dark:text-stone-50"}>
           <Dialog.Title className="font-bold text-xl">
             Formulario de Projecto
           </Dialog.Title>

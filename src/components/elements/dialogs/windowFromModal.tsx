@@ -55,11 +55,11 @@ export function WindowFormModal({ open, setOpen }: IWindowFormModalProps) {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
         <Dialog.Overlay
-          className={"fixed inset-0 w-screen h-screen bg-gray-500/40"}
+          className={"fixed inset-0 w-screen h-screen bg-gray-500/40 z-10"}
         />
         <Dialog.Content
           className={
-            "absolute bg-white p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2"
+            "absolute bg-stone-50 dark:bg-stone-600 p-6 rounded-md max-w-md top-1/2 left-1/2 -translate-1/2 z-20 dark:text-stone-50"
           }
           onInteractOutside={(e) => e.preventDefault()}
         >
@@ -94,7 +94,7 @@ export function WindowFormModal({ open, setOpen }: IWindowFormModalProps) {
                       variant={field.state.value === "classic" ? "cyan" : field.state.value === "p-65" ? "success" : undefined}
                       className={"w-full flex items-center justify-between! border-2 border-stone-800 dark:border-stone-400 text-stone-800 dark:text-stone-400 "}
                     >
-                      <span>{typeOptions.find((o) => o.value === field.state.value)?.label}</span>
+                      <span className="dark:text-white">{typeOptions.find((o) => o.value === field.state.value)?.label}</span>
                       <ChevronDown size={18} />
                     </Button>
                   </Dropdown>

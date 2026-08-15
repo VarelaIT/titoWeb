@@ -10,5 +10,5 @@ export function FieldError({ errors }: { errors: unknown[] }) {
 
   if (!message) return null;
 
-  return <p className="w-full text-sm text-red-600">{message}</p>;
+  return <p className="w-full text-sm text-red-600 dark:text-red-300">{message}</p>;
 }
