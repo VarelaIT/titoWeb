@@ -16,7 +16,7 @@ export function AppHeader(){
             >
                 <Button
                     variant="transparent"
-                    title="Claro/Oscuro"
+                    title="Claro / Oscuro"
                     onClick={()=> {
                         setTheme(theme === "light"? "dark" : "light");
                     }}
@@ -30,12 +30,12 @@ export function AppHeader(){
 
                 <Button
                     variant="transparent"
-                    title=""
+                    title="Vertical / Horizontal"
                     onClick={()=> {
                         setLayout(layout === "wide"? "compact" : "wide");
                     }}
                 >
-                    {layout === "wide"?
+                    {layout === "compact"?
                         <PanelRight size={16}/>
                         :
                         <PanelTop size={16}/>

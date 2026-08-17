@@ -1,7 +1,7 @@
 import { flexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getGroupedRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import { type ReactNode } from "react";
 import { TableProvider } from "../../providers/table.provider";
-import { ChevronDown, ChevronRight, ChevronsUpDown, ChevronUp, Group, Menu, Ungroup } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronUp, Group, Menu, Ungroup } from "lucide-react";
 import { Button } from "../buttons";
 import type { ITableStyles } from "../../../scripts/types";
 import { useTableInstance } from "../../../scripts/contexts/tableContext";

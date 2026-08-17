@@ -18,4 +18,5 @@ npm run tauri build
 
 ### Pending
 
-Realstate screen management.
+compact layout extra space
+header background
