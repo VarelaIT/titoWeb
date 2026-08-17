@@ -59,6 +59,7 @@ export type TStyleVariant = "primary" | "success" | "emerald" | "cyan" | "transp
 
 export enum EStorage{
   THEME = "theme",
+  LAYOUT = "layout"
 }
 
 export interface IProjectData {
@@ -102,3 +103,5 @@ export enum STORAGE_CONSTANTS {
   THEME = "theme",
   PROJECTS = "projects",
 }
+
+export type LayoutType = "compact" | "wide" | undefined;

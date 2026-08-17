@@ -1,23 +1,27 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { EStorage } from "../../scripts/types";
+import { EStorage, type LayoutType } from "../../scripts/types";
 
 export interface IThemeContext{
     theme: "light" | "dark",
     setTheme: (theme: "light" | "dark") => void,
+    layout: LayoutType,
+    setLayout: (layout: LayoutType)=> void,
 }
 
-const ThemeContext = createContext<IThemeContext>({theme: "light", setTheme: (theme: "light" | "dark")=> console.log("Theme context initialized in " + theme + " mode.")});
+const ThemeContext = createContext<IThemeContext | null>(null);
 
 export function ThemeProvider({children}: {children: ReactNode}){
     const [theme, setTheme] = useState<"light" | "dark">((localStorage.getItem(EStorage.THEME) as "light" | "dark")?? "light");
+    const [layout, setLayout] = useState<LayoutType>(localStorage.getItem(EStorage.LAYOUT) as LayoutType?? "wide");
 
     useEffect(()=> {
         localStorage.setItem(EStorage.THEME, theme);
+        localStorage.setItem(EStorage.LAYOUT, layout?? "wide");
         document.documentElement.className = theme;
     }, [theme]);
 
     return (
-        <ThemeContext.Provider value={{theme, setTheme}}>
+        <ThemeContext.Provider value={{theme, setTheme, layout, setLayout}}>
             {children}
         </ThemeContext.Provider>
     );

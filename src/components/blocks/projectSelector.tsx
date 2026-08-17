@@ -7,6 +7,7 @@ import { WindowMeasurements } from "../../scripts/windowsMeasurement";
 import { ArrowDown, ArrowUp, PlusIcon } from "lucide-react";
 import ProjectForm from "../forms/projectFrom";
 import { Page } from "../elements/pages";
+import { useTheme } from "../providers/themeProvider";
 
 /**
  * Percentage of a project's allotted time that has been consumed,
@@ -40,6 +41,7 @@ export default function ProjectSelector(){
     {key: "total", label: "Total"},
     {key: "items", label: "Articulos"},
   ];
+  const {layout} = useTheme();
 
   const projects = useMemo<IProject[]>(() => {
     const loadedProjects = loadProject();
@@ -105,7 +107,7 @@ export default function ProjectSelector(){
           </li>
         )}
       </ul>
-      <ul className="max-h-[80vh] overflow-auto">
+      <ul className={"max-h-[80vh] overflow-auto " + (layout === "compact"? "max-h-[250px]" : "")}>
         {projects.map((proj: IProject, i: number) => {
           const progress = getTimeConsumed(proj.startDate, proj.endDate);
           return <li key={"project" + i}

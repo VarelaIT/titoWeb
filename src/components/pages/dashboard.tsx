@@ -13,6 +13,7 @@ import { loadProject, printProject } from "../../scripts/utils";
 import { PRESETS_STORAGE } from "../../scripts/presetStorage";
 import { usePrompt } from "../providers/prompt.provider";
 import { useState } from "react";
+import { useTheme } from "../providers/themeProvider";
 
 export default function Dashboard() {
   const tableStyles: ITableStyles = {
@@ -24,7 +25,7 @@ export default function Dashboard() {
     body: {
       container: "",
       row: "dark:bg-stone-800 hover:bg-gray-300 bg-white dark:hover:bg-stone-500 even:bg-gray-100 dark:even:bg-stone-700",
-      cell: "p-2 border-b border-r border-gray-200 ",
+      cell: "p-2 border-b border-r border-gray-200 truncate ",
     },
     footer: {
       container: "",
@@ -33,6 +34,7 @@ export default function Dashboard() {
     }
   };
   const [openWindowForm, setOpenWindowForm] = useState(false);
+  const {layout} = useTheme();
   const defaultColumnConf = {
     enableColumnFilter: true,
     enableGrouping: true,
@@ -104,11 +106,13 @@ export default function Dashboard() {
       accessorKey: "height",
       cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
     },
+    /*
     {
       ...defaultColumnConf,
       header: "Paneles",
       accessorKey: "panels",
     },
+    */
     {
       ...defaultColumnConf,
       header: "Rieles",
@@ -140,9 +144,6 @@ export default function Dashboard() {
     },
   ];
 
-
-
-
   const { project, setProject } = useProject();
   const { setPrompt } = usePrompt();
 
@@ -153,7 +154,7 @@ export default function Dashboard() {
   }
 
 return (
-      <section className="grid grid-cols-[2fr_auto] gap-4 " >
+      <section className={"gap-4 " + (layout === "compact"? "flex flex-col-reverse" : "grid grid-cols-[3fr_1fr]") }>
         <div className="">
           <article className="rounded-md shadow bg-stone-100 dark:bg-stone-800 p-4 grid gap-2">
             <header className="w-full">
