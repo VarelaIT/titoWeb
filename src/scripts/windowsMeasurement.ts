@@ -91,4 +91,8 @@ export class WindowMeasurements{
         return this.height - this.glassDiff.height;
     }
 
+    getGlassDimentions(){
+        return this.getGlassBase().toFixed(2) + " x " + this.getGlassHeigth().toFixed(2);
+    }
+
 }

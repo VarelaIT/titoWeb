@@ -135,15 +135,8 @@ export default function Dashboard() {
     },
     {
       ...defaultColumnConf,
-      header: "Base de Cristal",
-      accessorFn: (row) => row.getGlassBase(),
-      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
-    },
-    {
-      ...defaultColumnConf,
-      header: "Altura de Cristal",
-      accessorFn: (row) => row.getGlassHeigth(),
-      cell: ({ cell }) => (cell.getValue() as number).toFixed(2),
+      header: "Cristal",
+      accessorFn: (row) => row.getGlassDimentions(),
     },
   ];
 
